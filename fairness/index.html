@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fairness and DIF · Gözde Sırgancı</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231E6A82'/%3E%3Cpath d='M5 25C12 25 13 7 27 7' stroke='%23E2AE4A' stroke-width='3' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: topic page in the same reading column; explainer, live DIF demo, then the evidence (publications) */
+:root{
+  --paper:#F4F6F5; --surface:#FFFFFF; --ink:#13252A; --muted:#566A6F; --rule:#D5DEDC;
+  --accent:#1E6A82; --curve:#B9821C; --tint:#E6EFEE; --fill:rgba(185,130,28,.16);
+  --display:"Spectral",Georgia,"Times New Roman",serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:880px;margin:0 auto}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+nav.crumb{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding-block:20px;font-size:14.5px;font-weight:500;border-bottom:1px solid var(--rule)}
+nav.crumb span{color:var(--muted);font-weight:400}
+
+.hero{padding-block:44px 36px;border-bottom:1px solid var(--rule)}
+h1{font-size:clamp(34px,5.5vw,50px);line-height:1.08;margin-top:10px}
+.lede{margin-top:16px;max-width:62ch;font-size:17px}
+.lede+.lede{margin-top:12px;font-size:16px;color:var(--muted)}
+
+section{padding-block:40px;border-bottom:1px solid var(--rule)}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.sec-head h2{font-size:27px}
+.sec-head .eyebrow{margin-left:auto}
+
+/* demo */
+.demo{display:grid;grid-template-columns:1.5fr 1fr;gap:28px;align-items:start}
+.demo>*{min-width:0}
+.plot{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:10px}
+.plot svg{display:block;width:100%;height:auto}
+.plot text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.controls{display:grid;gap:18px}
+.ctl label{display:flex;justify-content:space-between;font-size:14px;font-weight:500}
+.ctl output{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--curve)}
+.ctl input{width:100%;accent-color:var(--curve);margin-top:6px}
+.ctl small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:2px}
+.readout{border-top:1px solid var(--rule);padding-top:14px;display:grid;gap:6px;font-size:14px}
+.readout div{display:flex;justify-content:space-between;gap:12px}
+.readout b{font-family:var(--mono);font-weight:500;font-variant-numeric:tabular-nums}
+.verdict{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:3px;border:1px solid var(--curve);color:var(--curve);justify-self:start}
+.presets{display:flex;flex-wrap:wrap;gap:8px}
+.presets button{font:500 13px var(--body);color:var(--ink);background:transparent;border:1px solid var(--rule);border-radius:3px;padding:5px 10px;cursor:pointer}
+.presets button:hover{border-color:var(--accent);color:var(--accent)}
+
+/* questions */
+.qs{display:grid;grid-template-columns:repeat(3,1fr);gap:24px 28px}
+.qs>div{min-width:0;border-top:2px solid var(--accent);padding-top:12px}
+.qs h3{font-size:19px;line-height:1.3;margin-bottom:6px}
+.qs p{font-size:14.5px;color:var(--muted)}
+
+/* publications */
+.group{margin-top:30px}
+.group:first-of-type{margin-top:0}
+.group>h3{font-family:var(--mono);font-weight:500;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.pub{display:grid;grid-template-columns:64px 1fr;gap:18px;padding-block:16px;border-bottom:1px solid var(--rule)}
+.pub:last-child{border-bottom:0}
+.pub>*{min-width:0}
+.yr{font-family:var(--mono);font-size:13px;color:var(--curve);font-variant-numeric:tabular-nums;padding-top:3px}
+.pub h4{font-family:var(--display);font-size:18px;font-weight:600;line-height:1.35;margin:0}
+.pub .meta{font-size:13.5px;color:var(--muted);margin-top:3px}
+.pub .about{font-size:14.5px;margin-top:6px;max-width:64ch}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.acts a,.acts span{font:500 12.5px var(--body);text-decoration:none;padding:4px 10px;border-radius:3px;border:1px solid var(--accent);color:var(--accent)}
+.acts a:hover{background:var(--accent);color:var(--paper)}
+.acts span{border-color:var(--rule);color:var(--muted)}
+
+footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+@media (max-width:720px){
+  .demo{grid-template-columns:1fr}
+  .qs{grid-template-columns:1fr}
+  .sec-head .eyebrow{margin-left:0;flex-basis:100%;order:-1}
+  .pub{grid-template-columns:1fr;gap:2px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="crumb"><a href="/">← Gözde Sırgancı, PhD</a><span>Research topic</span></nav>
+
+<header class="hero">
+  <div class="eyebrow">Fairness · DIF · Measurement invariance</div>
+  <h1>Does this test measure everyone the same way?</h1>
+  <p class="lede">A test is fair when two people with the same level of the skill have the same chance of answering an item correctly, whatever group they belong to. When that fails for a specific item, psychometricians call it <strong>differential item functioning</strong> (DIF). When it fails for a whole scale, so that scores cannot be compared across countries, languages or genders, we say the scale lacks <strong>measurement invariance</strong>.</p>
+  <p class="lede">DIF is different from a group simply scoring lower. Groups can differ in ability. DIF means the item itself behaves differently once ability is held constant, often because of wording, cultural context or content that one group has seen more than the other.</p>
+</header>
+
+<section id="demo">
+  <div class="sec-head"><h2>See DIF in one item</h2><span class="eyebrow">Two-parameter IRT model</span></div>
+  <div class="demo">
+    <div class="plot">
+      <svg id="icc" viewBox="0 0 560 330" role="img" aria-label="Item characteristic curves for two groups; the shaded area between them shows the size of DIF"></svg>
+    </div>
+    <div class="controls">
+      <div class="ctl">
+        <label for="db">Difficulty gap (Δb) <output id="dbv">0.60</output></label>
+        <input type="range" id="db" min="-1.5" max="1.5" step="0.05" value="0.6">
+        <small>Shifts the item for group B. Equal shift at every ability level is <em>uniform</em> DIF.</small>
+      </div>
+      <div class="ctl">
+        <label for="da">Discrimination gap (Δa) <output id="dav">0.00</output></label>
+        <input type="range" id="da" min="-0.8" max="0.8" step="0.05" value="0">
+        <small>Changes the slope for group B, so the gap grows or flips across ability. That is <em>non-uniform</em> DIF.</small>
+      </div>
+      <div class="presets" aria-label="Examples">
+        <button type="button" data-db="0" data-da="0">No DIF</button>
+        <button type="button" data-db="0.6" data-da="0">Uniform</button>
+        <button type="button" data-db="0.1" data-da="-0.6">Non-uniform</button>
+      </div>
+      <div class="readout" aria-live="polite">
+        <span class="verdict" id="verdict">Uniform DIF</span>
+        <div><span>P(correct) at θ = 0, group A</span><b id="pa">—</b></div>
+        <div><span>P(correct) at θ = 0, group B</span><b id="pb">—</b></div>
+        <div><span>Unsigned area between curves</span><b id="area">—</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="questions">
+  <div class="sec-head"><h2>The questions my research asks</h2><span class="eyebrow">Research lines</span></div>
+  <div class="qs">
+    <div><h3>Which items are unfair, and how do we find them?</h3><p>Comparing DIF detection methods for dichotomous and polytomous items, from logistic regression and Poly-SIBTEST to lasso-penalized IRT, machine learning and generative AI.</p></div>
+    <div><h3>Can scores be compared across many groups?</h3><p>Testing measurement invariance in large-scale assessments such as PISA with alignment optimization and Bayesian approximate invariance, where dozens of countries are compared at once.</p></div>
+    <div><h3>Where does DIF come from?</h3><p>Explaining DIF with mixture Rasch and IRT-MIMIC models, covariates and latent classes, and asking whether DIF changes across ability levels.</p></div>
+  </div>
+</section>
+
+<section id="publications">
+  <div class="sec-head"><h2>Publications and presentations</h2><span class="eyebrow">Evidence</span></div>
+
+  <div class="group">
+    <h3>Journal articles</h3>
+    <article class="pub"><div class="yr">2023</div><div>
+      <h4>Comparison of GPCMlasso and alignment methods in detecting differential item functioning</h4>
+      <p class="meta">Sirganci, G. · International Journal of Eurasian Education and Culture, 8(23), 2270–2299</p>
+      <p class="about">Compares a lasso-penalized generalized partial credit model with alignment optimization for flagging DIF in polytomous items.</p>
+      <div class="acts"><a href="https://doi.org/10.35826/ijoecc.764" target="_blank" rel="noopener">Read article</a></div>
+    </div></article>
+    <article class="pub"><div class="yr">2023</div><div>
+      <h4>A machine learning approach to assess differential item functioning of the PISA 2018 ICT Engagement Questionnaire</h4>
+      <p class="meta">Sirganci, G. · International Journal of Curriculum and Instruction, 15(3), 2079–2093</p>
+      <p class="about">Uses machine learning to examine DIF in a PISA 2018 student questionnaire on engagement with information and communication technology.</p>
+      <div class="acts"><a href="https://scholar.google.com/scholar?q=%22A+machine+learning+approach+to+assess+differential+item+functioning+of+the+PISA+2018+ICT%22" target="_blank" rel="noopener">Find on Google Scholar</a></div>
+    </div></article>
+    <article class="pub"><div class="yr">2020</div><div>
+      <h4>Measurement invariance testing with alignment method: Many groups comparison</h4>
+      <p class="meta">Sırgancı, G., Uyumaz, G., &amp; Yandı, A. · International Journal of Assessment Tools in Education, 7(4), 657–673</p>
+      <p class="about">Applies the alignment method to test measurement invariance when many groups are compared at the same time.</p>
+      <div class="acts"><a href="https://doi.org/10.21449/ijate.714218" target="_blank" rel="noopener">Read article</a></div>
+    </div></article>
+    <article class="pub"><div class="yr">2020</div><div>
+      <h4>Detecting differential item functioning by using sequential logistic regression and Poly-SIBTEST methods</h4>
+      <p class="meta">Sırgancı, G., &amp; Çakan, M. · Journal of the Faculty of Education, Bolu Abant İzzet Baysal University, 20(1), 705–717 · in Turkish</p>
+      <p class="about">Compares two DIF detection methods for polytomously scored items using a PISA student questionnaire.</p>
+      <div class="acts"><a href="https://doi.org/10.17240/aibuefd.2020.20.52925-665084" target="_blank" rel="noopener">Read article</a></div>
+    </div></article>
+  </div>
+
+  <div class="group">
+    <h3>Under review</h3>
+    <article class="pub"><div class="yr">2026</div><div>
+      <h4>Utility of off-the-shelf generative AIs for DIF detection</h4>
+      <p class="meta">Patarapichayatham, C., Sirganci, G., &amp; Kamata, A. · Under review, Educational Assessment · presented at NCME 2026, Los Angeles</p>
+      <p class="about">Tests whether widely available generative AI tools can identify items that function differently across groups.</p>
+    </div></article>
+    <article class="pub"><div class="yr">2026</div><div>
+      <h4>Is creativity measured fairly? Ability-dependent differential item functioning by gender in the PISA 2022 Creative Thinking Assessment</h4>
+      <p class="meta">Sirganci, G., &amp; Meşe, C. · Under review, The Journal of Creative Behavior</p>
+    </div></article>
+  </div>
+
+  <div class="group">
+    <h3>Conference presentations</h3>
+    <article class="pub"><div class="yr">2025</div><div>
+      <h4>Modeling variational DIF for different ability levels with a moderated mediation approach</h4>
+      <p class="meta">Sirganci, G., Kara, Y., Fong, M., &amp; Kamata, A. · NCME Annual Meeting, Denver</p>
+    </div></article>
+    <article class="pub"><div class="yr">2025</div><div>
+      <h4>Model-based detection of passage bias in oral reading fluency assessments</h4>
+      <p class="meta">Sirganci, G., Kara, Y., Nese, J. F. T., &amp; Kamata, A. · NCME Annual Meeting, Denver</p>
+    </div></article>
+    <article class="pub"><div class="yr">2025</div><div>
+      <h4>Exploring fairness of next-generation items: Differential item action analysis on process data</h4>
+      <p class="meta">Kara, Y., Sirganci, G., Qiao, X., Kamata, A., Sumsong, S., &amp; Fong, M. · NCME Annual Meeting, Denver</p>
+    </div></article>
+    <article class="pub"><div class="yr">2021</div><div>
+      <h4>Measurement invariance testing with many groups: A comparison of Bayesian structural equation modeling and alignment optimization</h4>
+      <p class="meta">Sirganci, G., Uyumaz, G., &amp; Kamata, A. · 7th International Congress on Measurement and Evaluation in Education and Psychology, Ankara</p>
+    </div></article>
+    <article class="pub"><div class="yr">2020</div><div>
+      <h4>The effect of covariate variables on the determination of differential item functioning using the mixture Rasch model</h4>
+      <p class="meta">Sirganci, G., &amp; Çokluk Bökeoğlu, Ö. · AERA Annual Meeting, San Francisco (accepted; meeting canceled) · based on my doctoral dissertation, Ankara University, 2019</p>
+    </div></article>
+  </div>
+
+  <div class="group">
+    <h3>Book chapters · in Turkish</h3>
+    <article class="pub"><div class="yr">2022</div><div>
+      <h4>Measurement invariance in the scale development process</h4>
+      <p class="meta">In M. Acar Güvendir &amp; Y. Özer Özkan (Eds.), <em>Tüm yönleriyle ölçek geliştirme süreci</em> (pp. 155–182). Pegem Akademi</p>
+    </div></article>
+    <article class="pub"><div class="yr">2022</div><div>
+      <h4>New approaches to the validity of multiple-group comparisons in large-scale assessments</h4>
+      <p class="meta">In S. Karabatak (Ed.), <em>Eğitim &amp; Bilim 2022-IV</em> (pp. 95–116). Efe Akademik Yayıncılık</p>
+    </div></article>
+  </div>
+
+  <div class="group">
+    <h3>Funded projects · Principal investigator</h3>
+    <article class="pub"><div class="yr">2017</div><div>
+      <h4>Detecting differential item functioning for groups and latent classes simultaneously based on mixture IRT and IRT-MIMIC models</h4>
+      <p class="meta">TÜBİTAK International Doctoral Research Fellowship · Southern Methodist University, 2017–2018</p>
+    </div></article>
+    <article class="pub"><div class="yr">2020</div><div>
+      <h4>Determination of approximate measurement invariance with Bayesian alignment optimization</h4>
+      <p class="meta">Yozgat Bozok University Scientific Research Projects Program, 2020–2022</p>
+    </div></article>
+  </div>
+</section>
+
+<footer><a href="/#contact">Discuss a fairness review →</a><span>© 2026 Gözde Sırgancı</span></footer>
+</div>
+
+<script>
+(function(){
+  var svg=document.getElementById('icc'), NS='http://www.w3.org/2000/svg';
+  var W=560,H=330,L=48,R=16,T=18,B=52, pw=W-L-R, ph=H-T-B;
+  var A={a:1.2,b:0};
+  function x(t){return L+(t+3)/6*pw} function y(p){return T+(1-p)*ph}
+  function P(a,b,t){return 1/(1+Math.exp(-a*(t-b)))}
+  function el(n,at,txt){var e=document.createElementNS(NS,n);for(var k in at)e.setAttribute(k,at[k]);if(txt!=null)e.textContent=txt;return e}
+  // static frame
+  var g=el('g',{});
+  [0,.25,.5,.75,1].forEach(function(p){g.appendChild(el('line',{x1:L,x2:W-R,y1:y(p),y2:y(p),stroke:'var(--rule)','stroke-width':1,'stroke-dasharray':p===0||p===1?'':'2 4'}));g.appendChild(el('text',{x:L-8,y:y(p)+4,'text-anchor':'end'},p===0?'0':p===1?'1.0':String(p).replace('0.','.')))});
+  [-3,-2,-1,0,1,2,3].forEach(function(t){g.appendChild(el('text',{x:x(t),y:H-B+18,'text-anchor':'middle'},t>0?'+'+t:t<0?'−'+(-t):'0'))});
+  g.appendChild(el('text',{x:L+pw/2,y:H-10,'text-anchor':'middle'},'θ (ability)'));
+  g.appendChild(el('text',{x:14,y:T+ph/2,'text-anchor':'middle',transform:'rotate(-90 14 '+(T+ph/2)+')'},'P(correct)'));
+  g.appendChild(el('line',{x1:x(0),x2:x(0),y1:T,y2:T+ph,stroke:'var(--rule)','stroke-width':1}));
+  svg.appendChild(g);
+  var area=el('path',{fill:'var(--fill)',stroke:'none'}), ca=el('path',{fill:'none',stroke:'var(--accent)','stroke-width':2.5}), cb=el('path',{fill:'none',stroke:'var(--curve)','stroke-width':2.5});
+  var la=el('text',{style:'fill:var(--accent)'},'group A'), lb=el('text',{style:'fill:var(--curve)'},'group B');
+  var da0=el('circle',{r:4,fill:'var(--accent)'}), db0=el('circle',{r:4,fill:'var(--curve)'});
+  [area,ca,cb,da0,db0,la,lb].forEach(function(e){svg.appendChild(e)});
+  var dbI=document.getElementById('db'), daI=document.getElementById('da');
+  function draw(){
+    var db=+dbI.value, da=+daI.value, Bp={a:A.a+da,b:A.b+db}, pa=[],pb=[],s=0,N=120;
+    for(var i=0;i<=N;i++){var t=-3+6*i/N;pa.push([x(t),y(P(A.a,A.b,t))]);pb.push([x(t),y(P(Bp.a,Bp.b,t))]);if(i<N){var tm=t+3/N;s+=Math.abs(P(A.a,A.b,tm)-P(Bp.a,Bp.b,tm))*6/N}}
+    function d(arr){return arr.map(function(p,i){return(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1)}).join('')}
+    ca.setAttribute('d',d(pa)); cb.setAttribute('d',d(pb));
+    area.setAttribute('d',d(pa)+pb.slice().reverse().map(function(p){return'L'+p[0].toFixed(1)+','+p[1].toFixed(1)}).join('')+'Z');
+    var a0=P(A.a,A.b,0), b0=P(Bp.a,Bp.b,0);
+    da0.setAttribute('cx',x(0));da0.setAttribute('cy',y(a0));db0.setAttribute('cx',x(0));db0.setAttribute('cy',y(b0));
+    var tA=-1.9, tB=1.7;
+    la.setAttribute('x',x(tA)-10);la.setAttribute('y',y(P(A.a,A.b,tA))-10);la.setAttribute('text-anchor','end');
+    lb.setAttribute('x',x(tB)+8);lb.setAttribute('y',y(P(Bp.a,Bp.b,tB))+18);
+    document.getElementById('dbv').textContent=(db>0?'+':'')+db.toFixed(2);
+    document.getElementById('dav').textContent=(da>0?'+':'')+da.toFixed(2);
+    document.getElementById('pa').textContent=Math.round(a0*100)+'%';
+    document.getElementById('pb').textContent=Math.round(b0*100)+'%';
+    document.getElementById('area').textContent=s.toFixed(2);
+    var v=Math.abs(db)<.05&&Math.abs(da)<.05?'No DIF':Math.abs(da)<.05?'Uniform DIF':'Non-uniform DIF';
+    document.getElementById('verdict').textContent=v;
+  }
+  dbI.addEventListener('input',draw); daI.addEventListener('input',draw);
+  document.querySelectorAll('.presets button').forEach(function(b){b.addEventListener('click',function(){dbI.value=b.dataset.db;daI.value=b.dataset.da;draw()})});
+  draw();
+})();
+</script>
+</body>
+</html>
