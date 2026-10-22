@@ -96,6 +96,9 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
 }
 @media (max-width:440px){.steps{grid-template-columns:1fr}}
 .lang{display:inline-flex;gap:2px;font:500 12.5px var(--mono);letter-spacing:.06em}.lang a{padding:3px 8px;border-radius:3px;text-decoration:none;color:var(--muted)}.lang a:hover{color:var(--accent)}.lang a[aria-current]{background:var(--accent);color:#fff}
+
+.refs{list-style:none;margin:0;padding:0;display:grid;gap:8px;max-width:80ch}
+.refs li{font-size:13.5px;line-height:1.5;padding-left:2em;text-indent:-2em;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -132,7 +135,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
         <div><span>Items needed for α = .80</span><b id="need80">—</b></div>
         <div><span>Items needed for α = .90</span><b id="need90">—</b></div>
       </div>
-      <p class="fine">Standardized α under equal inter-item correlations, from the Spearman–Brown formula: α = k·r̄ / (1 + (k − 1)·r̄). The .70 / .80 / .90 lines are common rules of thumb (Nunnally &amp; Bernstein, 1994), not fixed cut-offs. Real scales also need evidence on factor structure and validity; α alone is not enough.</p>
+      <p class="fine">Standardized Cronbach's α (Cronbach, 1951) under equal inter-item correlations, from the Spearman–Brown formula (Spearman, 1910; Brown, 1910): α = k·r̄ / (1 + (k − 1)·r̄). The .70 / .80 / .90 lines are common rules of thumb (Nunnally &amp; Bernstein, 1994), not fixed cut-offs. Real scales also need evidence on factor structure and validity; α alone is not enough.</p>
       <p style="font-size:14px;font-weight:500;margin:0"><a href="/tools/#omega">See when α underestimates reliability: α vs ω →</a></p>
     </div>
   </div>
@@ -150,7 +153,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
     <li><h3>Measurement invariance</h3><p>Checking that the scale works the same way across gender, age or other groups.</p></li>
     <li><h3>Report and interpret</h3><p>Scoring guidance and a write-up that reviewers and users can follow.</p></li>
   </ol>
-  <p class="adapt"><strong>For adaptations</strong>, steps one and two become forward and back translation, expert review of cultural fit and language equivalence, and a check that the original factor structure holds in the new sample.</p>
+  <p class="adapt"><strong>For adaptations</strong>, steps one and two become forward and back translation, expert review of cultural fit and language equivalence, and a check that the original factor structure holds in the new sample, following the ITC guidelines (International Test Commission, 2017). The sequence above follows DeVellis and Thorpe (2022).</p>
 </section>
 
 <section id="publications">
@@ -232,6 +235,11 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
       <div class="acts"><a href="https://doi.org/10.24106/kefdergi.358066" target="_blank" rel="noopener">Read article</a></div>
     </div></article>
   </div>
+</section>
+
+<section id="references">
+  <div class="sec-head"><h2>References</h2></div>
+  <ul class="refs"><li>Brown, W. (1910). Some experimental results in the correlation of mental abilities. <em>British Journal of Psychology, 3</em>(3), 296–322.</li><li>Cronbach, L. J. (1951). Coefficient alpha and the internal structure of tests. <em>Psychometrika, 16</em>(3), 297–334.</li><li>DeVellis, R. F., &amp; Thorpe, C. T. (2022). <em>Scale development: Theory and applications</em> (5th ed.). Sage.</li><li>International Test Commission. (2017). <em>The ITC guidelines for translating and adapting tests</em> (2nd ed.). International Test Commission.</li><li>McDonald, R. P. (1999). <em>Test theory: A unified treatment</em>. Erlbaum.</li><li>Nunnally, J. C., &amp; Bernstein, I. H. (1994). <em>Psychometric theory</em> (3rd ed.). McGraw-Hill.</li><li>Spearman, C. (1910). Correlation calculated from faulty data. <em>British Journal of Psychology, 3</em>(3), 271–295.</li></ul>
 </section>
 
 <footer><a href="/#contact">Plan a scale development study →</a><span>© 2026 Gözde Sırgancı</span></footer>

@@ -97,6 +97,9 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
   .pub{grid-template-columns:1fr;gap:2px}
 }
 .lang{display:inline-flex;gap:2px;font:500 12.5px var(--mono);letter-spacing:.06em}.lang a{padding:3px 8px;border-radius:3px;text-decoration:none;color:var(--muted)}.lang a:hover{color:var(--accent)}.lang a[aria-current]{background:var(--accent);color:#fff}
+
+.refs{list-style:none;margin:0;padding:0;display:grid;gap:8px;max-width:80ch}
+.refs li{font-size:13.5px;line-height:1.5;padding-left:2em;text-indent:-2em;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -106,7 +109,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
 <header class="hero">
   <div class="eyebrow">Ölçme adaleti · DMF · Ölçme değişmezliği</div>
   <h1>Bu test herkesi aynı şekilde ölçüyor mu?</h1>
-  <p class="lede">Bir test, aynı yetenek düzeyindeki iki kişiye, hangi gruptan olurlarsa olsunlar, bir maddeyi doğru yanıtlama konusunda eşit şans tanıyorsa adildir. Bu durum belirli bir maddede bozulduğunda psikometride buna <strong>değişen madde fonksiyonu</strong> (DMF) denir. Sorun ölçeğin bütününde ortaya çıkıyor ve puanlar ülkeler, diller ya da cinsiyetler arasında karşılaştırılamıyorsa, ölçekte <strong>ölçme değişmezliği</strong> sağlanmamış demektir.</p>
+  <p class="lede">Bir test, aynı yetenek düzeyindeki iki kişiye, hangi gruptan olurlarsa olsunlar, bir maddeyi doğru yanıtlama konusunda eşit şans tanıyorsa adildir (AERA, APA ve NCME, 2014). Bu durum belirli bir maddede bozulduğunda psikometride buna <strong>değişen madde fonksiyonu</strong> (DMF) denir. Sorun ölçeğin bütününde ortaya çıkıyor ve puanlar ülkeler, diller ya da cinsiyetler arasında karşılaştırılamıyorsa, ölçekte <strong>ölçme değişmezliği</strong> sağlanmamış demektir.</p>
   <p class="lede">DMF, bir grubun daha düşük puan almasıyla aynı şey değildir; gruplar yetenek bakımından gerçekten farklı olabilir. DMF, yetenek sabit tutulduğunda maddenin kendisinin gruplar arasında farklı işlemesidir. Bunun nedeni çoğu zaman ifade biçimi, kültürel bağlam ya da bir grubun diğerine göre daha aşina olduğu içeriktir.</p>
 </header>
 
@@ -138,7 +141,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
         <div><span>θ = 0'da P(doğru), B grubu</span><b id="pb">—</b></div>
         <div><span>Eğriler arasındaki işaretsiz alan</span><b id="area">—</b></div>
       </div>
-      <p style="font-size:12.5px;color:var(--muted);line-height:1.45;margin:0">İki parametreli lojistik model; A grubu için a = 1.2, b = 0. Alan, iki eğri arasındaki işaretsiz alandır ve θ = −3 ile +3 arasında sayısal olarak hesaplanır. Raju'nun (1988) alan ölçüsü θ'nın tüm aralığı üzerinden tanımlıdır; buradaki değer onun sınırlı aralık sürümüdür.</p>
+      <p style="font-size:12.5px;color:var(--muted);line-height:1.45;margin:0">İki parametreli lojistik model (Birnbaum, 1968); A grubu için a = 1.2, b = 0. Alan, iki eğri arasındaki işaretsiz alandır ve θ = −3 ile +3 arasında sayısal olarak hesaplanır. Raju'nun (1988) alan ölçüsü θ'nın tüm aralığı üzerinden tanımlıdır; buradaki değer onun sınırlı aralık sürümüdür. Tek biçimli ve tek biçimli olmayan DMF ayrımı Mellenbergh'e (1982) dayanır.</p>
       <p style="font-size:14px;font-weight:500;margin:0"><a href="/tr/tools/#mh">Kendi verinizle Mantel–Haenszel DMF analizi yapın →</a></p>
     </div>
   </div>
@@ -244,6 +247,11 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
       <p class="meta">Yozgat Bozok Üniversitesi Bilimsel Araştırma Projeleri (BAP), 2020–2022</p>
     </div></article>
   </div>
+</section>
+
+<section id="references">
+  <div class="sec-head"><h2>Kaynaklar</h2></div>
+  <ul class="refs"><li>American Educational Research Association, American Psychological Association, &amp; National Council on Measurement in Education. (2014). <em>Standards for educational and psychological testing</em>. American Educational Research Association.</li><li>Birnbaum, A. (1968). Some latent trait models and their use in inferring an examinee's ability. In F. M. Lord &amp; M. R. Novick, <em>Statistical theories of mental test scores</em> (pp. 397–479). Addison-Wesley.</li><li>Holland, P. W., &amp; Thayer, D. T. (1988). Differential item performance and the Mantel–Haenszel procedure. In H. Wainer &amp; H. I. Braun (Eds.), <em>Test validity</em> (pp. 129–145). Erlbaum.</li><li>Mantel, N., &amp; Haenszel, W. (1959). Statistical aspects of the analysis of data from retrospective studies of disease. <em>Journal of the National Cancer Institute, 22</em>(4), 719–748.</li><li>Mellenbergh, G. J. (1982). Contingency table models for assessing item bias. <em>Journal of Educational Statistics, 7</em>(2), 105–118.</li><li>Raju, N. S. (1988). The area between two item characteristic curves. <em>Psychometrika, 53</em>(4), 495–502.</li></ul>
 </section>
 
 <footer><a href="/tr/#contact">Ölçme adaleti incelemesi için iletişime geçin →</a><span>© 2026 Gözde Sırgancı</span></footer>

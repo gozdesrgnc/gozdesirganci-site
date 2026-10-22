@@ -124,6 +124,9 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
   .tool,.mhout{grid-template-columns:1fr}
   .sec-head .eyebrow{margin-left:0;flex-basis:100%;order:-1}
 }
+
+.refs{list-style:none;margin:0;padding:0;display:grid;gap:8px;max-width:80ch}
+.refs li{font-size:13.5px;line-height:1.5;padding-left:2em;text-indent:-2em;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -168,7 +171,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
       </div>
     </div>
   </div>
-  <div class="note"><b>How it is computed.</b> Andrich rating scale model with item location δ = 0: <code>P(X = x | θ) ∝ exp Σ<sub>k=1..x</sub> (θ − δ − τ<sub>k</sub>)</code>. Adjacent curves cross at θ = δ + τ<sub>k</sub>. The spacing check follows Linacre's (2002) guideline that thresholds should advance by at least 1.4 logits for a 3-category scale (about 1.0 for 5 categories) and by less than 5 logits. These are guidelines for judging a scale, not strict tests.</div>
+  <div class="note"><b>How it is computed.</b> Andrich (1978) rating scale model with item location δ = 0: <code>P(X = x | θ) ∝ exp Σ<sub>k=1..x</sub> (θ − δ − τ<sub>k</sub>)</code>. Adjacent curves cross at θ = δ + τ<sub>k</sub>. The spacing check follows Linacre's (2002) guideline that thresholds should advance by at least 1.4 logits for a 3-category scale (about 1.0 for 5 categories) and by less than 5 logits. These are guidelines for judging a scale, not strict tests.</div>
 </section>
 
 <!-- ============ 2. CAT ============ -->
@@ -214,7 +217,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
       <div class="items"><table><thead><tr><th>#</th><th>a</th><th>b</th><th>answer</th><th>θ̂</th></tr></thead><tbody id="catRows"></tbody></table></div>
     </div>
   </div>
-  <div class="note"><b>How it is computed.</b> Items follow the two-parameter logistic model <code>P = 1 / (1 + exp(−a(θ − b)))</code>; the bank has 80 items with a between 0.7 and 2.0 and b between −3 and +3. The next item is the unused one with the most Fisher information <code>a²·P·(1 − P)</code> at the current estimate. θ̂ is the expected a posteriori (EAP) estimate with a standard normal prior; the standard error is the posterior standard deviation. Real programs add exposure control and content balancing, which this demo leaves out.</div>
+  <div class="note"><b>How it is computed.</b> Items follow the two-parameter logistic model (Birnbaum, 1968) <code>P = 1 / (1 + exp(−a(θ − b)))</code>; the bank has 80 items with a between 0.7 and 2.0 and b between −3 and +3. The next item is the unused one with the most Fisher information <code>a²·P·(1 − P)</code> at the current estimate (Lord, 1980). θ̂ is the expected a posteriori (EAP) estimate with a standard normal prior (Bock &amp; Mislevy, 1982); the standard error is the posterior standard deviation. Real programs add exposure control and content balancing, which this demo leaves out.</div>
 </section>
 
 <!-- ============ 3. MANTEL-HAENSZEL ============ -->
@@ -251,7 +254,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
       <svg id="mhSvg" viewBox="0 0 400 150" role="img" aria-label="MH D-DIF on the ETS delta scale with A, B and C zones"></svg>
     </div>
   </div>
-  <div class="note"><b>How it is computed.</b> For score group k with reference correct A, reference incorrect B, focal correct C, focal incorrect D and total N: <code>α<sub>MH</sub> = Σ(A·D/N) / Σ(B·C/N)</code> and <code>Δ<sub>MH</sub> = −2.35 · ln α<sub>MH</sub></code>. Negative Δ means the item favors the reference group. The SE uses the Robins–Breslow–Greenland variance of ln α<sub>MH</sub>. ETS categories: <b>A</b> if |Δ| &lt; 1 or χ² is not significant at .05; <b>C</b> if |Δ| ≥ 1.5 and |Δ| is significantly greater than 1 (one-sided .05); otherwise <b>B</b>. Score groups where either group is empty are skipped. References: Holland &amp; Thayer (1988); Zwick (2012).</div>
+  <div class="note"><b>How it is computed.</b> For score group k with reference correct A, reference incorrect B, focal correct C, focal incorrect D and total N: <code>α<sub>MH</sub> = Σ(A·D/N) / Σ(B·C/N)</code> and <code>Δ<sub>MH</sub> = −2.35 · ln α<sub>MH</sub></code>. Negative Δ means the item favors the reference group. The SE uses the Robins–Breslow–Greenland (1986) variance of ln α<sub>MH</sub>. ETS categories: <b>A</b> if |Δ| &lt; 1 or χ² is not significant at .05; <b>C</b> if |Δ| ≥ 1.5 and |Δ| is significantly greater than 1 (one-sided .05); otherwise <b>B</b>. Score groups where either group is empty are skipped. References: Mantel &amp; Haenszel (1959); Holland &amp; Thayer (1988); Zwick (2012).</div>
   <div id="mhData"></div>
 </section>
 
@@ -277,7 +280,12 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
       </div>
     </div>
   </div>
-  <div class="note"><b>How it is computed.</b> Six standardized items load on one factor with loadings λ<sub>i</sub> and uncorrelated errors (error variance 1 − λ<sub>i</sub>²). Implied total variance <code>V = (Σλ)² + Σ(1 − λ²)</code>. <code>ω = (Σλ)² / V</code> (McDonald, 1999) and <code>α = k/(k − 1) · (1 − k / V)</code> from the implied correlation matrix. With equal loadings (tau-equivalence) α = ω; otherwise α &lt; ω.</div>
+  <div class="note"><b>How it is computed.</b> Six standardized items load on one factor with loadings λ<sub>i</sub> and uncorrelated errors (error variance 1 − λ<sub>i</sub>²). Implied total variance <code>V = (Σλ)² + Σ(1 − λ²)</code>. <code>ω = (Σλ)² / V</code> (McDonald, 1999) and Cronbach's (1951) <code>α = k/(k − 1) · (1 − k / V)</code> from the implied correlation matrix. With equal loadings (tau-equivalence) α = ω; otherwise α &lt; ω.</div>
+</section>
+
+<section id="references">
+  <div class="sec-head"><h2>References</h2></div>
+  <ul class="refs"><li>Andrich, D. (1978). A rating formulation for ordered response categories. <em>Psychometrika, 43</em>(4), 561–573.</li><li>Birnbaum, A. (1968). Some latent trait models and their use in inferring an examinee's ability. In F. M. Lord &amp; M. R. Novick, <em>Statistical theories of mental test scores</em> (pp. 397–479). Addison-Wesley.</li><li>Bock, R. D., &amp; Mislevy, R. J. (1982). Adaptive EAP estimation of ability in a microcomputer environment. <em>Applied Psychological Measurement, 6</em>(4), 431–444.</li><li>Cronbach, L. J. (1951). Coefficient alpha and the internal structure of tests. <em>Psychometrika, 16</em>(3), 297–334.</li><li>Holland, P. W., &amp; Thayer, D. T. (1988). Differential item performance and the Mantel–Haenszel procedure. In H. Wainer &amp; H. I. Braun (Eds.), <em>Test validity</em> (pp. 129–145). Erlbaum.</li><li>Linacre, J. M. (2002). Optimizing rating scale category effectiveness. <em>Journal of Applied Measurement, 3</em>(1), 85–106.</li><li>Lord, F. M. (1980). <em>Applications of item response theory to practical testing problems</em>. Erlbaum.</li><li>Mantel, N., &amp; Haenszel, W. (1959). Statistical aspects of the analysis of data from retrospective studies of disease. <em>Journal of the National Cancer Institute, 22</em>(4), 719–748.</li><li>McDonald, R. P. (1999). <em>Test theory: A unified treatment</em>. Erlbaum.</li><li>Robins, J., Breslow, N., &amp; Greenland, S. (1986). Estimators of the Mantel–Haenszel variance consistent in both sparse data and large-strata limiting models. <em>Biometrics, 42</em>(2), 311–323.</li><li>Zwick, R. (2012). <em>A review of ETS differential item functioning assessment procedures: Flagging rules, minimum sample size requirements, and criterion refinement</em> (Research Report No. RR-12-08). Educational Testing Service.</li></ul>
 </section>
 
 <footer><a href="/#contact">Need help applying these to your own study? →</a><span>© 2026 Gözde Sırgancı</span></footer>

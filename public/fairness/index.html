@@ -95,6 +95,9 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
   .pub{grid-template-columns:1fr;gap:2px}
 }
 .lang{display:inline-flex;gap:2px;font:500 12.5px var(--mono);letter-spacing:.06em}.lang a{padding:3px 8px;border-radius:3px;text-decoration:none;color:var(--muted)}.lang a:hover{color:var(--accent)}.lang a[aria-current]{background:var(--accent);color:#fff}
+
+.refs{list-style:none;margin:0;padding:0;display:grid;gap:8px;max-width:80ch}
+.refs li{font-size:13.5px;line-height:1.5;padding-left:2em;text-indent:-2em;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -104,7 +107,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
 <header class="hero">
   <div class="eyebrow">Fairness · DIF · Measurement invariance</div>
   <h1>Does this test measure everyone the same way?</h1>
-  <p class="lede">A test is fair when two people with the same level of the skill have the same chance of answering an item correctly, whatever group they belong to. When that fails for a specific item, psychometricians call it <strong>differential item functioning</strong> (DIF). When it fails for a whole scale, so that scores cannot be compared across countries, languages or genders, we say the scale lacks <strong>measurement invariance</strong>.</p>
+  <p class="lede">A test is fair when two people with the same level of the skill have the same chance of answering an item correctly, whatever group they belong to (AERA, APA, &amp; NCME, 2014). When that fails for a specific item, psychometricians call it <strong>differential item functioning</strong> (DIF). When it fails for a whole scale, so that scores cannot be compared across countries, languages or genders, we say the scale lacks <strong>measurement invariance</strong>.</p>
   <p class="lede">DIF is different from a group simply scoring lower. Groups can differ in ability. DIF means the item itself behaves differently once ability is held constant, often because of wording, cultural context or content that one group has seen more than the other.</p>
 </header>
 
@@ -136,7 +139,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
         <div><span>P(correct) at θ = 0, group B</span><b id="pb">—</b></div>
         <div><span>Unsigned area between curves</span><b id="area">—</b></div>
       </div>
-      <p style="font-size:12.5px;color:var(--muted);line-height:1.45;margin:0">Two-parameter logistic model; group A has a = 1.2, b = 0. The area is the unsigned area between the two curves, computed numerically over θ = −3 to +3. Raju's (1988) area measure is defined over the whole θ range, so this value is its restricted-range version.</p>
+      <p style="font-size:12.5px;color:var(--muted);line-height:1.45;margin:0">Two-parameter logistic model (Birnbaum, 1968); group A has a = 1.2, b = 0. The area is the unsigned area between the two curves, computed numerically over θ = −3 to +3. Raju's (1988) area measure is defined over the whole θ range, so this value is its restricted-range version. The uniform / non-uniform distinction follows Mellenbergh (1982).</p>
       <p style="font-size:14px;font-weight:500;margin:0"><a href="/tools/#mh">Run a Mantel–Haenszel DIF analysis on your own data →</a></p>
     </div>
   </div>
@@ -242,6 +245,11 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
       <p class="meta">Yozgat Bozok University Scientific Research Projects Program, 2020–2022</p>
     </div></article>
   </div>
+</section>
+
+<section id="references">
+  <div class="sec-head"><h2>References</h2></div>
+  <ul class="refs"><li>American Educational Research Association, American Psychological Association, &amp; National Council on Measurement in Education. (2014). <em>Standards for educational and psychological testing</em>. American Educational Research Association.</li><li>Birnbaum, A. (1968). Some latent trait models and their use in inferring an examinee's ability. In F. M. Lord &amp; M. R. Novick, <em>Statistical theories of mental test scores</em> (pp. 397–479). Addison-Wesley.</li><li>Holland, P. W., &amp; Thayer, D. T. (1988). Differential item performance and the Mantel–Haenszel procedure. In H. Wainer &amp; H. I. Braun (Eds.), <em>Test validity</em> (pp. 129–145). Erlbaum.</li><li>Mantel, N., &amp; Haenszel, W. (1959). Statistical aspects of the analysis of data from retrospective studies of disease. <em>Journal of the National Cancer Institute, 22</em>(4), 719–748.</li><li>Mellenbergh, G. J. (1982). Contingency table models for assessing item bias. <em>Journal of Educational Statistics, 7</em>(2), 105–118.</li><li>Raju, N. S. (1988). The area between two item characteristic curves. <em>Psychometrika, 53</em>(4), 495–502.</li></ul>
 </section>
 
 <footer><a href="/#contact">Discuss a fairness review →</a><span>© 2026 Gözde Sırgancı</span></footer>

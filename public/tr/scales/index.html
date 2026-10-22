@@ -98,6 +98,9 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
 }
 @media (max-width:440px){.steps{grid-template-columns:1fr}}
 .lang{display:inline-flex;gap:2px;font:500 12.5px var(--mono);letter-spacing:.06em}.lang a{padding:3px 8px;border-radius:3px;text-decoration:none;color:var(--muted)}.lang a:hover{color:var(--accent)}.lang a[aria-current]{background:var(--accent);color:#fff}
+
+.refs{list-style:none;margin:0;padding:0;display:grid;gap:8px;max-width:80ch}
+.refs li{font-size:13.5px;line-height:1.5;padding-left:2em;text-indent:-2em;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -134,7 +137,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
         <div><span>α = .80 için gereken madde sayısı</span><b id="need80">—</b></div>
         <div><span>α = .90 için gereken madde sayısı</span><b id="need90">—</b></div>
       </div>
-      <p class="fine">Maddeler arası korelasyonların eşit olduğu varsayımı altında, Spearman–Brown formülünden elde edilen standartlaştırılmış α: α = k·r̄ / (1 + (k − 1)·r̄). .70 / .80 / .90 çizgileri yaygın olarak kullanılan pratik ölçütlerdir (Nunnally ve Bernstein, 1994), kesin kesme noktaları değildir. Gerçek bir ölçek için faktör yapısı ve geçerlik kanıtları da gerekir; α tek başına yeterli değildir.</p>
+      <p class="fine">Maddeler arası korelasyonların eşit olduğu varsayımı altında, Spearman–Brown formülünden (Spearman, 1910; Brown, 1910) elde edilen standartlaştırılmış α: α = k·r̄ / (1 + (k − 1)·r̄). .70 / .80 / .90 çizgileri yaygın olarak kullanılan pratik ölçütlerdir (Nunnally ve Bernstein, 1994), kesin kesme noktaları değildir. Gerçek bir ölçek için faktör yapısı ve geçerlik kanıtları da gerekir; α tek başına yeterli değildir.</p>
       <p style="font-size:14px;font-weight:500;margin:0"><a href="/tr/tools/#omega">α güvenirliği ne zaman olduğundan düşük gösterir? α ile ω →</a></p>
     </div>
   </div>
@@ -152,7 +155,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
     <li><h3>Ölçme değişmezliği</h3><p>Ölçeğin cinsiyet, yaş ya da diğer gruplarda aynı şekilde işlediğinin sınanması.</p></li>
     <li><h3>Raporlama ve yorumlama</h3><p>Puanlama yönergesi ve hakemlerin ile kullanıcıların izleyebileceği bir rapor.</p></li>
   </ol>
-  <p class="adapt"><strong>Uyarlama çalışmalarında</strong> ilk iki adımın yerini çeviri ve geri çeviri, kültürel uygunluk ve dil eşdeğerliği için uzman görüşü ile özgün faktör yapısının yeni örneklemde de geçerli olup olmadığının sınanması alır.</p>
+  <p class="adapt"><strong>Uyarlama çalışmalarında</strong> ilk iki adımın yerini çeviri ve geri çeviri, kültürel uygunluk ve dil eşdeğerliği için uzman görüşü ile özgün faktör yapısının yeni örneklemde de geçerli olup olmadığının sınanması alır; bu aşamalarda ITC yönergeleri (International Test Commission, 2017) izlenir. Yukarıdaki sıralama DeVellis ve Thorpe'u (2022) temel alır.</p>
 </section>
 
 <section id="publications">
@@ -234,6 +237,11 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
       <div class="acts"><a href="https://doi.org/10.24106/kefdergi.358066" target="_blank" rel="noopener">Makaleyi okuyun</a></div>
     </div></article>
   </div>
+</section>
+
+<section id="references">
+  <div class="sec-head"><h2>Kaynaklar</h2></div>
+  <ul class="refs"><li>Brown, W. (1910). Some experimental results in the correlation of mental abilities. <em>British Journal of Psychology, 3</em>(3), 296–322.</li><li>Cronbach, L. J. (1951). Coefficient alpha and the internal structure of tests. <em>Psychometrika, 16</em>(3), 297–334.</li><li>DeVellis, R. F., &amp; Thorpe, C. T. (2022). <em>Scale development: Theory and applications</em> (5th ed.). Sage.</li><li>International Test Commission. (2017). <em>The ITC guidelines for translating and adapting tests</em> (2nd ed.). International Test Commission.</li><li>McDonald, R. P. (1999). <em>Test theory: A unified treatment</em>. Erlbaum.</li><li>Nunnally, J. C., &amp; Bernstein, I. H. (1994). <em>Psychometric theory</em> (3rd ed.). McGraw-Hill.</li><li>Spearman, C. (1910). Correlation calculated from faulty data. <em>British Journal of Psychology, 3</em>(3), 271–295.</li></ul>
 </section>
 
 <footer><a href="/tr/#contact">Ölçek geliştirme çalışmanızı birlikte planlayalım →</a><span>© 2026 Gözde Sırgancı</span></footer>
