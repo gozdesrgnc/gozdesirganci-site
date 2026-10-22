@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://gozdesirganci.com/</loc><lastmod>2026-10-22</lastmod></url>
-  <url><loc>https://gozdesirganci.com/fairness/</loc><lastmod>2026-10-22</lastmod></url>
-  <url><loc>https://gozdesirganci.com/scales/</loc><lastmod>2026-10-22</lastmod></url>
-  <url><loc>https://gozdesirganci.com/tools/</loc><lastmod>2026-10-22</lastmod></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://gozdesirganci.com/</loc><lastmod>2026-10-22</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gozdesirganci.com/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://gozdesirganci.com/tr/"/>
+  </url>
+  <url><loc>https://gozdesirganci.com/tr/</loc><lastmod>2026-10-22</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gozdesirganci.com/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://gozdesirganci.com/tr/"/>
+  </url>
+  <url><loc>https://gozdesirganci.com/fairness/</loc><lastmod>2026-10-22</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gozdesirganci.com/fairness/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://gozdesirganci.com/tr/fairness/"/>
+  </url>
+  <url><loc>https://gozdesirganci.com/tr/fairness/</loc><lastmod>2026-10-22</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gozdesirganci.com/fairness/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://gozdesirganci.com/tr/fairness/"/>
+  </url>
+  <url><loc>https://gozdesirganci.com/scales/</loc><lastmod>2026-10-22</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gozdesirganci.com/scales/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://gozdesirganci.com/tr/scales/"/>
+  </url>
+  <url><loc>https://gozdesirganci.com/tr/scales/</loc><lastmod>2026-10-22</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gozdesirganci.com/scales/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://gozdesirganci.com/tr/scales/"/>
+  </url>
+  <url><loc>https://gozdesirganci.com/tools/</loc><lastmod>2026-10-22</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gozdesirganci.com/tools/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://gozdesirganci.com/tr/tools/"/>
+  </url>
+  <url><loc>https://gozdesirganci.com/tr/tools/</loc><lastmod>2026-10-22</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gozdesirganci.com/tools/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://gozdesirganci.com/tr/tools/"/>
+  </url>
 </urlset>

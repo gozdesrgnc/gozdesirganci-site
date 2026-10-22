@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<link rel="canonical" href="https://gozdesirganci.com/tr/fairness/">
+<link rel="alternate" hreflang="en" href="https://gozdesirganci.com/fairness/">
+<link rel="alternate" hreflang="tr" href="https://gozdesirganci.com/tr/fairness/">
+<link rel="alternate" hreflang="x-default" href="https://gozdesirganci.com/fairness/">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ölçme Adaleti ve DMF · Doç. Dr. Gözde Sırgancı</title>
+<meta name="description" content="Değişen madde fonksiyonu (DMF) ve ölçme değişmezliği: etkileşimli bir DMF gösterimi, araştırma soruları ve Doç. Dr. Gözde Sırgancı'nın yayınları.">
+<meta property="og:locale" content="tr_TR">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231E6A82'/%3E%3Cpath d='M5 25C12 25 13 7 27 7' stroke='%23E8590C' stroke-width='3' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: topic page in the same reading column; explainer, live DIF demo, then the evidence (publications) */
+:root{
+  --paper:#F4F6F5; --surface:#FFFFFF; --ink:#13252A; --muted:#566A6F; --rule:#D5DEDC;
+  --accent:#1E6A82; --curve:#C2410C; --tint:#E6EFEE; --fill:rgba(194,65,12,.13);
+  --display:"Spectral",Georgia,"Times New Roman",serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:880px;margin:0 auto}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+nav.crumb{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding-block:20px;font-size:14.5px;font-weight:500;border-bottom:1px solid var(--rule)}
+nav.crumb span{color:var(--muted);font-weight:400}
+
+.hero{padding-block:44px 36px;border-bottom:1px solid var(--rule)}
+h1{font-size:clamp(34px,5.5vw,50px);line-height:1.08;margin-top:10px}
+.lede{margin-top:16px;max-width:62ch;font-size:17px}
+.lede+.lede{margin-top:12px;font-size:16px;color:var(--muted)}
+
+section{padding-block:40px;border-bottom:1px solid var(--rule)}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.sec-head h2{font-size:27px}
+.sec-head .eyebrow{margin-left:auto}
+
+/* demo */
+.demo{display:grid;grid-template-columns:1.5fr 1fr;gap:28px;align-items:start}
+.demo>*{min-width:0}
+.plot{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:10px}
+.plot svg{display:block;width:100%;height:auto}
+.plot text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.controls{display:grid;gap:18px}
+.ctl label{display:flex;justify-content:space-between;font-size:14px;font-weight:500}
+.ctl output{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--curve)}
+.ctl input{width:100%;accent-color:var(--curve);margin-top:6px}
+.ctl small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:2px}
+.readout{border-top:1px solid var(--rule);padding-top:14px;display:grid;gap:6px;font-size:14px}
+.readout div{display:flex;justify-content:space-between;gap:12px}
+.readout b{font-family:var(--mono);font-weight:500;font-variant-numeric:tabular-nums}
+.verdict{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:3px;border:1px solid var(--curve);color:var(--curve);justify-self:start}
+.presets{display:flex;flex-wrap:wrap;gap:8px}
+.presets button{font:500 13px var(--body);color:var(--ink);background:transparent;border:1px solid var(--rule);border-radius:3px;padding:5px 10px;cursor:pointer}
+.presets button:hover{border-color:var(--accent);color:var(--accent)}
+
+/* questions */
+.qs{display:grid;grid-template-columns:repeat(3,1fr);gap:24px 28px}
+.qs>div{min-width:0;border-top:2px solid var(--accent);padding-top:12px}
+.qs h3{font-size:19px;line-height:1.3;margin-bottom:6px}
+.qs p{font-size:14.5px;color:var(--muted)}
+
+/* publications */
+.group{margin-top:30px}
+.group:first-of-type{margin-top:0}
+.group>h3{font-family:var(--mono);font-weight:500;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.pub{display:grid;grid-template-columns:64px 1fr;gap:18px;padding-block:16px;border-bottom:1px solid var(--rule)}
+.pub:last-child{border-bottom:0}
+.pub>*{min-width:0}
+.yr{font-family:var(--mono);font-size:13px;color:var(--curve);font-variant-numeric:tabular-nums;padding-top:3px}
+.pub h4{font-family:var(--display);font-size:18px;font-weight:600;line-height:1.35;margin:0}
+.pub .meta{font-size:13.5px;color:var(--muted);margin-top:3px}
+.pub .about{font-size:14.5px;margin-top:6px;max-width:64ch}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.acts a,.acts span{font:500 12.5px var(--body);text-decoration:none;padding:4px 10px;border-radius:3px;border:1px solid var(--accent);color:var(--accent)}
+.acts a:hover{background:var(--accent);color:var(--paper)}
+.acts span{border-color:var(--rule);color:var(--muted)}
+
+footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+@media (max-width:720px){
+  .demo{grid-template-columns:1fr}
+  .qs{grid-template-columns:1fr}
+  .sec-head .eyebrow{margin-left:0;flex-basis:100%;order:-1}
+  .pub{grid-template-columns:1fr;gap:2px}
+}
+.lang{display:inline-flex;gap:2px;font:500 12.5px var(--mono);letter-spacing:.06em}.lang a{padding:3px 8px;border-radius:3px;text-decoration:none;color:var(--muted)}.lang a:hover{color:var(--accent)}.lang a[aria-current]{background:var(--accent);color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="crumb"><a href="/tr/">← Doç. Dr. Gözde Sırgancı</a><nav class="lang" aria-label="Language / Dil"><a href="/fairness/" hreflang="en" lang="en">EN</a><a href="/tr/fairness/" hreflang="tr" lang="tr" aria-current="page">TR</a></nav></nav>
+
+<header class="hero">
+  <div class="eyebrow">Ölçme adaleti · DMF · Ölçme değişmezliği</div>
+  <h1>Bu test herkesi aynı şekilde ölçüyor mu?</h1>
+  <p class="lede">Bir test, aynı yetenek düzeyindeki iki kişiye, hangi gruptan olurlarsa olsunlar, bir maddeyi doğru yanıtlama konusunda eşit şans tanıyorsa adildir. Bu durum belirli bir maddede bozulduğunda psikometride buna <strong>değişen madde fonksiyonu</strong> (DMF) denir. Sorun ölçeğin bütününde ortaya çıkıyor ve puanlar ülkeler, diller ya da cinsiyetler arasında karşılaştırılamıyorsa, ölçekte <strong>ölçme değişmezliği</strong> sağlanmamış demektir.</p>
+  <p class="lede">DMF, bir grubun daha düşük puan almasıyla aynı şey değildir; gruplar yetenek bakımından gerçekten farklı olabilir. DMF, yetenek sabit tutulduğunda maddenin kendisinin gruplar arasında farklı işlemesidir. Bunun nedeni çoğu zaman ifade biçimi, kültürel bağlam ya da bir grubun diğerine göre daha aşina olduğu içeriktir.</p>
+</header>
+
+<section id="demo">
+  <div class="sec-head"><h2>Tek bir maddede DMF</h2><span class="eyebrow">İki parametreli MTK modeli</span></div>
+  <div class="demo">
+    <div class="plot">
+      <svg id="icc" viewBox="0 0 560 330" role="img" aria-label="İki grup için madde karakteristik eğrileri; aradaki taralı alan DMF'nin büyüklüğünü gösterir"></svg>
+    </div>
+    <div class="controls">
+      <div class="ctl">
+        <label for="db">Güçlük farkı (Δb) <output id="dbv">0.60</output></label>
+        <input type="range" id="db" min="-1.5" max="1.5" step="0.05" value="0.6">
+        <small>B grubu için maddeyi kaydırır. Her yetenek düzeyinde eşit kayma <em>tek biçimli</em> DMF'dir.</small>
+      </div>
+      <div class="ctl">
+        <label for="da">Ayırt edicilik farkı (Δa) <output id="dav">0.00</output></label>
+        <input type="range" id="da" min="-0.8" max="0.8" step="0.05" value="0">
+        <small>B grubu için eğimi değiştirir; böylece fark yetenek boyunca büyür ya da yön değiştirir. Bu, <em>tek biçimli olmayan</em> DMF'dir.</small>
+      </div>
+      <div class="presets" aria-label="Örnekler">
+        <button type="button" data-db="0" data-da="0">DMF yok</button>
+        <button type="button" data-db="0.6" data-da="0">Tek biçimli</button>
+        <button type="button" data-db="0.1" data-da="-0.6">Tek biçimli olmayan</button>
+      </div>
+      <div class="readout" aria-live="polite">
+        <span class="verdict" id="verdict">Tek biçimli DMF</span>
+        <div><span>θ = 0'da P(doğru), A grubu</span><b id="pa">—</b></div>
+        <div><span>θ = 0'da P(doğru), B grubu</span><b id="pb">—</b></div>
+        <div><span>Eğriler arasındaki işaretsiz alan</span><b id="area">—</b></div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);line-height:1.45;margin:0">İki parametreli lojistik model; A grubu için a = 1.2, b = 0. Alan, iki eğri arasındaki işaretsiz alandır ve θ = −3 ile +3 arasında sayısal olarak hesaplanır. Raju'nun (1988) alan ölçüsü θ'nın tüm aralığı üzerinden tanımlıdır; buradaki değer onun sınırlı aralık sürümüdür.</p>
+      <p style="font-size:14px;font-weight:500;margin:0"><a href="/tr/tools/#mh">Kendi verinizle Mantel–Haenszel DMF analizi yapın →</a></p>
+    </div>
+  </div>
+</section>
+
+<section id="questions">
+  <div class="sec-head"><h2>Araştırmalarımın yanıt aradığı sorular</h2><span class="eyebrow">Araştırma alanları</span></div>
+  <div class="qs">
+    <div><h3>Hangi maddeler yanlı ve bunları nasıl buluruz?</h3><p>İki kategorili ve çok kategorili maddelerde DMF belirleme yöntemlerinin karşılaştırılması: lojistik regresyon ve Poly-SIBTEST'ten lasso cezalandırmalı MTK modellerine, makine öğrenmesine ve üretken yapay zekâya.</p></div>
+    <div><h3>Puanlar çok sayıda grup arasında karşılaştırılabilir mi?</h3><p>Onlarca ülkenin aynı anda karşılaştırıldığı PISA gibi geniş ölçekli değerlendirmelerde ölçme değişmezliğinin hizalama (alignment) yöntemi ve Bayesçi yaklaşık değişmezlik ile sınanması.</p></div>
+    <div><h3>DMF nereden kaynaklanıyor?</h3><p>DMF'yi karma Rasch ve MTK-MIMIC modelleri, ortak değişkenler ve örtük sınıflarla açıklamak; DMF'nin yetenek düzeyine göre değişip değişmediğini incelemek.</p></div>
+  </div>
+</section>
+
+<section id="publications">
+  <div class="sec-head"><h2>Yayınlar ve sunumlar</h2><span class="eyebrow">Çalışmalar</span></div>
+
+  <div class="group">
+    <h3>Dergi makaleleri</h3>
+    <article class="pub"><div class="yr">2023</div><div>
+      <h4>Comparison of GPCMlasso and alignment methods in detecting differential item functioning</h4>
+      <p class="meta">Sirganci, G. · International Journal of Eurasian Education and Culture, 8(23), 2270–2299</p>
+      <p class="about">Çok kategorili maddelerde DMF belirlemede lasso cezalandırmalı genelleştirilmiş kısmi puan modelini hizalama yöntemiyle karşılaştırır.</p>
+      <div class="acts"><a href="https://doi.org/10.35826/ijoecc.764" target="_blank" rel="noopener">Makaleyi okuyun</a></div>
+    </div></article>
+    <article class="pub"><div class="yr">2023</div><div>
+      <h4>A machine learning approach to assess differential item functioning of the PISA 2018 ICT Engagement Questionnaire</h4>
+      <p class="meta">Sirganci, G. · International Journal of Curriculum and Instruction, 15(3), 2079–2093</p>
+      <p class="about">PISA 2018 öğrenci anketindeki bilgi ve iletişim teknolojilerine katılım ölçeğinde DMF'yi makine öğrenmesiyle inceler.</p>
+      <div class="acts"><a href="https://scholar.google.com/scholar?q=%22A+machine+learning+approach+to+assess+differential+item+functioning+of+the+PISA+2018+ICT%22" target="_blank" rel="noopener">Google Akademik'te bulun</a></div>
+    </div></article>
+    <article class="pub"><div class="yr">2020</div><div>
+      <h4>Measurement invariance testing with alignment method: Many groups comparison</h4>
+      <p class="meta">Sırgancı, G., Uyumaz, G., &amp; Yandı, A. · International Journal of Assessment Tools in Education, 7(4), 657–673</p>
+      <p class="about">Çok sayıda grubun aynı anda karşılaştırıldığı durumlarda ölçme değişmezliğini hizalama yöntemiyle sınar.</p>
+      <div class="acts"><a href="https://doi.org/10.21449/ijate.714218" target="_blank" rel="noopener">Makaleyi okuyun</a></div>
+    </div></article>
+    <article class="pub"><div class="yr">2020</div><div>
+      <h4>Sıralı lojistik regresyon ve Poly-SIBTEST yöntemleri ile değişen madde fonksiyonunun belirlenmesi</h4>
+      <p class="meta">Sırgancı, G., &amp; Çakan, M. · Abant İzzet Baysal Üniversitesi Eğitim Fakültesi Dergisi, 20(1), 705–717</p>
+      <p class="about">Çok kategorili puanlanan maddelerde iki DMF belirleme yöntemini bir PISA öğrenci anketi üzerinde karşılaştırır.</p>
+      <div class="acts"><a href="https://doi.org/10.17240/aibuefd.2020.20.52925-665084" target="_blank" rel="noopener">Makaleyi okuyun</a></div>
+    </div></article>
+  </div>
+
+  <div class="group">
+    <h3>Değerlendirmede</h3>
+    <article class="pub"><div class="yr">2026</div><div>
+      <h4>Utility of off-the-shelf generative AIs for DIF detection</h4>
+      <p class="meta">Patarapichayatham, C., Sirganci, G., &amp; Kamata, A. · Değerlendirmede, Educational Assessment · NCME 2026, Los Angeles'ta sunuldu</p>
+      <p class="about">Yaygın olarak erişilebilen üretken yapay zekâ araçlarının gruplar arasında farklı işleyen maddeleri belirleyip belirleyemediğini sınar.</p>
+    </div></article>
+    <article class="pub"><div class="yr">2026</div><div>
+      <h4>Is creativity measured fairly? Ability-dependent differential item functioning by gender in the PISA 2022 Creative Thinking Assessment</h4>
+      <p class="meta">Sirganci, G., &amp; Meşe, C. · Değerlendirmede, The Journal of Creative Behavior</p>
+    </div></article>
+  </div>
+
+  <div class="group">
+    <h3>Kongre sunumları</h3>
+    <article class="pub"><div class="yr">2025</div><div>
+      <h4>Modeling variational DIF for different ability levels with a moderated mediation approach</h4>
+      <p class="meta">Sirganci, G., Kara, Y., Fong, M., &amp; Kamata, A. · NCME Yıllık Toplantısı, Denver</p>
+    </div></article>
+    <article class="pub"><div class="yr">2025</div><div>
+      <h4>Model-based detection of passage bias in oral reading fluency assessments</h4>
+      <p class="meta">Sirganci, G., Kara, Y., Nese, J. F. T., &amp; Kamata, A. · NCME Yıllık Toplantısı, Denver</p>
+    </div></article>
+    <article class="pub"><div class="yr">2025</div><div>
+      <h4>Exploring fairness of next-generation items: Differential item action analysis on process data</h4>
+      <p class="meta">Kara, Y., Sirganci, G., Qiao, X., Kamata, A., Sumsong, S., &amp; Fong, M. · NCME Yıllık Toplantısı, Denver</p>
+    </div></article>
+    <article class="pub"><div class="yr">2021</div><div>
+      <h4>Measurement invariance testing with many groups: A comparison of Bayesian structural equation modeling and alignment optimization</h4>
+      <p class="meta">Sirganci, G., Uyumaz, G., &amp; Kamata, A. · 7. Uluslararası Eğitimde ve Psikolojide Ölçme ve Değerlendirme Kongresi, Ankara</p>
+    </div></article>
+    <article class="pub"><div class="yr">2020</div><div>
+      <h4>The effect of covariate variables on the determination of differential item functioning using the mixture Rasch model</h4>
+      <p class="meta">Sirganci, G., &amp; Çokluk Bökeoğlu, Ö. · AERA Yıllık Toplantısı, San Francisco (kabul edildi; toplantı iptal oldu) · Ankara Üniversitesi'nde 2019'da tamamladığım doktora tezime dayanır</p>
+    </div></article>
+  </div>
+
+  <div class="group">
+    <h3>Kitap bölümleri</h3>
+    <article class="pub"><div class="yr">2022</div><div>
+      <h4>Ölçek geliştirme sürecinde ölçme değişmezliği</h4>
+      <p class="meta">M. Acar Güvendir ve Y. Özer Özkan (Ed.), <em>Tüm yönleriyle ölçek geliştirme süreci</em> içinde (s. 155–182). Pegem Akademi</p>
+    </div></article>
+    <article class="pub"><div class="yr">2022</div><div>
+      <h4>Geniş ölçekli değerlendirmelerde çoklu grup karşılaştırmalarının geçerliği üzerine yeni yaklaşımlar</h4>
+      <p class="meta">S. Karabatak (Ed.), <em>Eğitim &amp; Bilim 2022-IV</em> içinde (s. 95–116). Efe Akademik Yayıncılık</p>
+    </div></article>
+  </div>
+
+  <div class="group">
+    <h3>Desteklenen projeler · Yürütücü</h3>
+    <article class="pub"><div class="yr">2017</div><div>
+      <h4>Karma MTK ve MTK-MIMIC modellerine dayalı olarak gruplar ve örtük sınıflar için değişen madde fonksiyonunun eş zamanlı belirlenmesi</h4>
+      <p class="meta">TÜBİTAK 2214-A Yurt Dışı Doktora Sırası Araştırma Burs Programı · Southern Methodist University, 2017–2018</p>
+    </div></article>
+    <article class="pub"><div class="yr">2020</div><div>
+      <h4>Bayesçi hizalama optimizasyonu ile yaklaşık ölçme değişmezliğinin belirlenmesi</h4>
+      <p class="meta">Yozgat Bozok Üniversitesi Bilimsel Araştırma Projeleri (BAP), 2020–2022</p>
+    </div></article>
+  </div>
+</section>
+
+<footer><a href="/tr/#contact">Ölçme adaleti incelemesi için iletişime geçin →</a><span>© 2026 Gözde Sırgancı</span></footer>
+</div>
+
+<script>
+(function(){
+  var svg=document.getElementById('icc'), NS='http://www.w3.org/2000/svg';
+  var W=560,H=330,L=48,R=16,T=18,B=52, pw=W-L-R, ph=H-T-B;
+  var A={a:1.2,b:0};
+  function x(t){return L+(t+3)/6*pw} function y(p){return T+(1-p)*ph}
+  function P(a,b,t){return 1/(1+Math.exp(-a*(t-b)))}
+  function el(n,at,txt){var e=document.createElementNS(NS,n);for(var k in at)e.setAttribute(k,at[k]);if(txt!=null)e.textContent=txt;return e}
+  // static frame
+  var g=el('g',{});
+  [0,.25,.5,.75,1].forEach(function(p){g.appendChild(el('line',{x1:L,x2:W-R,y1:y(p),y2:y(p),stroke:'var(--rule)','stroke-width':1,'stroke-dasharray':p===0||p===1?'':'2 4'}));g.appendChild(el('text',{x:L-8,y:y(p)+4,'text-anchor':'end'},p===0?'0':p===1?'1.0':String(p).replace('0.','.')))});
+  [-3,-2,-1,0,1,2,3].forEach(function(t){g.appendChild(el('text',{x:x(t),y:H-B+18,'text-anchor':'middle'},t>0?'+'+t:t<0?'−'+(-t):'0'))});
+  g.appendChild(el('text',{x:L+pw/2,y:H-10,'text-anchor':'middle'},'θ (yetenek)'));
+  g.appendChild(el('text',{x:14,y:T+ph/2,'text-anchor':'middle',transform:'rotate(-90 14 '+(T+ph/2)+')'},'P(doğru)'));
+  g.appendChild(el('line',{x1:x(0),x2:x(0),y1:T,y2:T+ph,stroke:'var(--rule)','stroke-width':1}));
+  svg.appendChild(g);
+  var area=el('path',{fill:'var(--fill)',stroke:'none'}), ca=el('path',{fill:'none',stroke:'var(--accent)','stroke-width':2.5}), cb=el('path',{fill:'none',stroke:'var(--curve)','stroke-width':2.5});
+  var la=el('text',{style:'fill:var(--accent)'},'A grubu'), lb=el('text',{style:'fill:var(--curve)'},'B grubu');
+  var da0=el('circle',{r:4,fill:'var(--accent)'}), db0=el('circle',{r:4,fill:'var(--curve)'});
+  [area,ca,cb,da0,db0,la,lb].forEach(function(e){svg.appendChild(e)});
+  var dbI=document.getElementById('db'), daI=document.getElementById('da');
+  function draw(){
+    var db=+dbI.value, da=+daI.value, Bp={a:A.a+da,b:A.b+db}, pa=[],pb=[],s=0,N=120;
+    for(var i=0;i<=N;i++){var t=-3+6*i/N;pa.push([x(t),y(P(A.a,A.b,t))]);pb.push([x(t),y(P(Bp.a,Bp.b,t))]);if(i<N){var tm=t+3/N;s+=Math.abs(P(A.a,A.b,tm)-P(Bp.a,Bp.b,tm))*6/N}}
+    function d(arr){return arr.map(function(p,i){return(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1)}).join('')}
+    ca.setAttribute('d',d(pa)); cb.setAttribute('d',d(pb));
+    area.setAttribute('d',d(pa)+pb.slice().reverse().map(function(p){return'L'+p[0].toFixed(1)+','+p[1].toFixed(1)}).join('')+'Z');
+    var a0=P(A.a,A.b,0), b0=P(Bp.a,Bp.b,0);
+    da0.setAttribute('cx',x(0));da0.setAttribute('cy',y(a0));db0.setAttribute('cx',x(0));db0.setAttribute('cy',y(b0));
+    var tA=-1.9, tB=1.7;
+    la.setAttribute('x',x(tA)-10);la.setAttribute('y',y(P(A.a,A.b,tA))-10);la.setAttribute('text-anchor','end');
+    lb.setAttribute('x',x(tB)+8);lb.setAttribute('y',y(P(Bp.a,Bp.b,tB))+18);
+    document.getElementById('dbv').textContent=(db>0?'+':'')+db.toFixed(2);
+    document.getElementById('dav').textContent=(da>0?'+':'')+da.toFixed(2);
+    document.getElementById('pa').textContent=Math.round(a0*100)+'%';
+    document.getElementById('pb').textContent=Math.round(b0*100)+'%';
+    document.getElementById('area').textContent=s.toFixed(2);
+    var v=Math.abs(db)<.05&&Math.abs(da)<.05?'DMF yok':Math.abs(da)<.05?'Tek biçimli DMF':'Tek biçimli olmayan DMF';
+    document.getElementById('verdict').textContent=v;
+  }
+  dbI.addEventListener('input',draw); daI.addEventListener('input',draw);
+  document.querySelectorAll('.presets button').forEach(function(b){b.addEventListener('click',function(){dbI.value=b.dataset.db;daI.value=b.dataset.da;draw()})});
+  draw();
+})();
+</script>
+</body>
+</html>

@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <link rel="canonical" href="https://gozdesirganci.com/">
+<link rel="alternate" hreflang="en" href="https://gozdesirganci.com/">
+<link rel="alternate" hreflang="tr" href="https://gozdesirganci.com/tr/">
+<link rel="alternate" hreflang="x-default" href="https://gozdesirganci.com/">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Gözde Sırgancı, PhD — psychometrician and measurement scientist working on fair, valid assessment, IRT, DIF, scale development and AI in assessment.">
 <meta property="og:title" content="Gözde Sırgancı, PhD">
@@ -34,7 +37,7 @@ h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0}
 p{margin:0}
 
 /* hero */
-.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:32px;align-items:center;padding-block:56px 40px;border-bottom:1px solid var(--rule)}
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:32px;align-items:center;padding-block:28px 40px;border-bottom:1px solid var(--rule)}
 .hero>*{min-width:0}
 .eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 h1{font-size:clamp(36px,6vw,54px);line-height:1.05;margin-top:10px;letter-spacing:-.01em}
@@ -111,9 +114,11 @@ section{padding-block:44px;border-bottom:1px solid var(--rule)}
 .contact button{font:500 14px var(--body);color:var(--paper);background:var(--accent);border:0;border-radius:3px;padding:8px 14px;cursor:pointer}
 .contact .note{font-size:13.5px;color:var(--muted);flex-basis:100%}
 footer{padding-block:28px 40px;font-size:13px;color:var(--muted)}
+.topbar{display:flex;justify-content:flex-end;padding-top:16px}
+.lang{display:inline-flex;gap:2px;font:500 12.5px var(--mono);letter-spacing:.06em}.lang a{padding:3px 8px;border-radius:3px;text-decoration:none;color:var(--muted)}.lang a:hover{color:var(--accent)}.lang a[aria-current]{background:var(--accent);color:#fff}
 
 @media (max-width:720px){
-  .hero{grid-template-columns:1fr;padding-block:36px 28px}
+  .hero{grid-template-columns:1fr;padding-block:16px 28px}
   .icc{max-width:420px}
   .portrait{justify-self:start;max-width:200px;order:-1}
   .areas{grid-template-columns:1fr 1fr}
@@ -132,6 +137,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted)}
 
 
 <div class="wrap">
+<div class="topbar"><nav class="lang" aria-label="Language / Dil"><a href="/" hreflang="en" lang="en" aria-current="page">EN</a><a href="/tr/" hreflang="tr" lang="tr">TR</a></nav></div>
 <header class="hero">
   <div>
     <div class="eyebrow">Psychometrics · AI in Assessment · Evaluation</div>
