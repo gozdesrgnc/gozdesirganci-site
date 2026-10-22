@@ -252,6 +252,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
     </div>
   </div>
   <div class="note"><b>How it is computed.</b> For score group k with reference correct A, reference incorrect B, focal correct C, focal incorrect D and total N: <code>α<sub>MH</sub> = Σ(A·D/N) / Σ(B·C/N)</code> and <code>Δ<sub>MH</sub> = −2.35 · ln α<sub>MH</sub></code>. Negative Δ means the item favors the reference group. The SE uses the Robins–Breslow–Greenland variance of ln α<sub>MH</sub>. ETS categories: <b>A</b> if |Δ| &lt; 1 or χ² is not significant at .05; <b>C</b> if |Δ| ≥ 1.5 and |Δ| is significantly greater than 1 (one-sided .05); otherwise <b>B</b>. Score groups where either group is empty are skipped. References: Holland &amp; Thayer (1988); Zwick (2012).</div>
+  <div id="mhData"></div>
 </section>
 
 <!-- ============ 4. ALPHA VS OMEGA ============ -->
@@ -536,5 +537,6 @@ var MH=(function(){
   build();draw();
 })();
 </script>
+<script src="/tools/mh-data.js"></script>
 </body>
 </html>

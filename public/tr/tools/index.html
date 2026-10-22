@@ -253,6 +253,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
     </div>
   </div>
   <div class="note"><b>Nasıl hesaplanıyor?</b> k puan grubunda referans grup doğru sayısı A, referans grup yanlış sayısı B, odak grup doğru sayısı C, odak grup yanlış sayısı D ve toplam N olmak üzere: <code>α<sub>MH</sub> = Σ(A·D/N) / Σ(B·C/N)</code> ve <code>Δ<sub>MH</sub> = −2.35 · ln α<sub>MH</sub></code>. Negatif Δ, maddenin referans grup lehine çalıştığını gösterir. Standart hata, ln α<sub>MH</sub> için Robins–Breslow–Greenland varyans kestiricisiyle hesaplanır. ETS kategorileri: |Δ| &lt; 1 ise ya da χ² .05 düzeyinde anlamlı değilse <b>A</b>; |Δ| ≥ 1.5 ve |Δ| 1'den anlamlı olarak büyükse (tek yönlü, .05) <b>C</b>; diğer durumlarda <b>B</b>. Gruplardan birinin boş olduğu puan grupları hesaba katılmaz. Kaynaklar: Holland &amp; Thayer (1988); Zwick (2012).</div>
+  <div id="mhData"></div>
 </section>
 
 <!-- ============ 4. ALPHA VS OMEGA ============ -->
@@ -537,5 +538,6 @@ var MH=(function(){
   build();draw();
 })();
 </script>
+<script src="/tools/mh-data.js"></script>
 </body>
 </html>
