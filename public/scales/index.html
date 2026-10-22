@@ -106,7 +106,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
 </header>
 
 <section id="demo">
-  <div class="sec-head"><h2>How many items does a scale need?</h2><span class="eyebrow">Spearman–Brown · Cronbach's α</span></div>
+  <div class="sec-head"><h2>How many items does a scale need?</h2><span class="eyebrow">Spearman–Brown formula</span></div>
   <div class="demo">
     <div class="plot">
       <svg id="rel" viewBox="0 0 560 320" role="img" aria-label="Expected reliability rising as items are added, for a chosen average inter-item correlation"></svg>
@@ -128,7 +128,8 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
         <div><span>Items needed for α = .80</span><b id="need80">—</b></div>
         <div><span>Items needed for α = .90</span><b id="need90">—</b></div>
       </div>
-      <p class="fine">Standardized α under equal inter-item correlations. Real scales also need evidence on factor structure and validity; α alone is not enough.</p>
+      <p class="fine">Standardized α under equal inter-item correlations, from the Spearman–Brown formula: α = k·r̄ / (1 + (k − 1)·r̄). The .70 / .80 / .90 lines are common rules of thumb (Nunnally &amp; Bernstein, 1994), not fixed cut-offs. Real scales also need evidence on factor structure and validity; α alone is not enough.</p>
+      <p style="font-size:14px;font-weight:500;margin:0"><a href="/tools/#omega">See when α underestimates reliability: α vs ω →</a></p>
     </div>
   </div>
 </section>

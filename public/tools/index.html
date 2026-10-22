@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="canonical" href="https://gozdesirganci.com/tools/">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Psychometric Tools · Gözde Sırgancı</title>
+<meta name="description" content="Free interactive psychometric tools: rating scale category curves, a computerized adaptive testing simulator, a Mantel–Haenszel DIF calculator, and coefficient alpha versus omega.">
+<meta property="og:title" content="Psychometric Tools · Gözde Sırgancı">
+<meta property="og:image" content="https://gozdesirganci.com/img/og.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231E6A82'/%3E%3Cpath d='M5 25C12 25 13 7 27 7' stroke='%23E8590C' stroke-width='3' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: tools page in the site's reading column; each tool = chart + controls, then a formula note */
+:root{
+  --paper:#F4F6F5; --surface:#FFFFFF; --ink:#13252A; --muted:#566A6F; --rule:#D5DEDC;
+  --accent:#1E6A82; --curve:#C2410C; --tint:#E6EFEE; --fill:rgba(30,106,130,.12); --fill2:rgba(194,65,12,.12);
+  --good:#2F7D4F; --warn:#A86A00; --bad:#B42318;
+  --display:"Spectral",Georgia,"Times New Roman",serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+.nocase{text-transform:none;letter-spacing:0}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:960px;margin:0 auto}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+nav.crumb{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding-block:20px;font-size:14.5px;font-weight:500;border-bottom:1px solid var(--rule)}
+nav.crumb span{color:var(--muted);font-weight:400}
+.hero{padding-block:44px 30px;border-bottom:1px solid var(--rule)}
+h1{font-size:clamp(34px,5.5vw,50px);line-height:1.08;margin-top:10px}
+.lede{margin-top:16px;max-width:64ch;font-size:17px}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.toc a{font:500 13.5px var(--body);text-decoration:none;padding:6px 12px;border:1px solid var(--rule);border-radius:3px;background:var(--surface);color:var(--ink)}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+
+section{padding-block:44px;border-bottom:1px solid var(--rule);scroll-margin-top:12px}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap}
+.sec-head h2{font-size:28px}
+.sec-head .eyebrow{margin-left:auto}
+.intro{max-width:66ch;color:var(--muted);margin-bottom:22px}
+
+.tool{display:grid;grid-template-columns:1.45fr 1fr;gap:28px;align-items:start}
+.tool>*{min-width:0}
+.plot{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:10px}
+.plot svg{display:block;width:100%;height:auto}
+.plot text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.controls{display:grid;gap:16px}
+.ctl label{display:flex;justify-content:space-between;gap:10px;font-size:14px;font-weight:500}
+.ctl output{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--curve)}
+.ctl input[type=range]{width:100%;accent-color:var(--curve);margin-top:4px}
+.ctl small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:500 13px var(--body);color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:3px;padding:6px 11px;cursor:pointer}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{filter:brightness(1.08);color:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select{font:14px var(--body);padding:4px 6px;border:1px solid var(--rule);border-radius:3px;background:var(--surface);color:var(--ink)}
+.readout{border-top:1px solid var(--rule);padding-top:12px;display:grid;gap:6px;font-size:14px}
+.readout div{display:flex;justify-content:space-between;gap:12px}
+.readout b{font-family:var(--mono);font-weight:500;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:3px;border:1px solid currentColor;justify-self:start}
+.pill.good{color:var(--good)} .pill.warn{color:var(--warn)} .pill.bad{color:var(--bad)} .pill.neutral{color:var(--accent)}
+.msgs{display:grid;gap:4px;font-size:13.5px}
+.msgs p{color:var(--muted)}
+.msgs p.w{color:var(--warn)}
+.note{margin-top:22px;padding:14px 16px;background:var(--tint);border-radius:4px;font-size:13.5px;line-height:1.55;max-width:80ch}
+.note code{font-family:var(--mono);font-size:12.5px}
+.note b{font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+
+/* CAT */
+.items{max-height:190px;overflow:auto;border:1px solid var(--rule);border-radius:3px;background:var(--surface)}
+.items table{width:100%;border-collapse:collapse;font-size:12.5px;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.items th,.items td{padding:4px 8px;text-align:right;border-bottom:1px solid var(--rule)}
+.items th{position:sticky;top:0;background:var(--surface);color:var(--muted);font-weight:500}
+.ok{color:var(--good)} .no{color:var(--bad)}
+.answer{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px}
+
+/* MH */
+.mhwrap{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;background:var(--surface)}
+.mh{border-collapse:collapse;width:100%;min-width:560px;font-size:13.5px}
+.mh th,.mh td{padding:6px 8px;border-bottom:1px solid var(--rule);text-align:center}
+.mh thead th{font-weight:500;color:var(--muted);font-size:12.5px}
+.mh thead tr:first-child th{color:var(--ink);font-size:13px}
+.mh input{width:76px;font:13.5px var(--mono);text-align:right;padding:4px 6px;border:1px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink)}
+.mh td.k{font-family:var(--mono);color:var(--muted)}
+.mh .x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1}
+.mh .x:hover{color:var(--bad)}
+.mhout{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px;align-items:start}
+.mhout>*{min-width:0}
+.example{font-size:12.5px;color:var(--warn);font-family:var(--mono)}
+
+/* omega */
+.bars text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.loads{display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;align-items:center;font-size:13.5px}
+.loads input{width:100%;accent-color:var(--accent)}
+.loads output{font-family:var(--mono);color:var(--accent);font-variant-numeric:tabular-nums;min-width:3ch;text-align:right}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.big div{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:10px 12px}
+.big span{display:block;font-size:12.5px;color:var(--muted)}
+.big b{font-family:var(--mono);font-size:26px;font-weight:500;font-variant-numeric:tabular-nums}
+
+footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+@media (max-width:780px){
+  .tool,.mhout{grid-template-columns:1fr}
+  .sec-head .eyebrow{margin-left:0;flex-basis:100%;order:-1}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="crumb"><a href="/">← Gözde Sırgancı, PhD</a><span>Interactive tools</span></nav>
+
+<header class="hero">
+  <div class="eyebrow">Free · Runs in your browser · No data leaves your device</div>
+  <h1>Psychometrics you can move</h1>
+  <p class="lede">Four small tools for students, researchers and test developers. Drag a slider, enter your own numbers, and see how the models behave. Each tool lists the formulas it uses so you can check the results.</p>
+  <div class="toc">
+    <a href="#categories">Rating scale categories</a>
+    <a href="#cat">Adaptive testing simulator</a>
+    <a href="#mh">Mantel–Haenszel DIF</a>
+    <a href="#omega">Alpha vs omega</a>
+  </div>
+</header>
+
+<!-- ============ 1. CATEGORY CURVES ============ -->
+<section id="categories">
+  <div class="sec-head"><h2>Do your response categories work?</h2><span class="eyebrow">Rasch rating scale model</span></div>
+  <p class="intro">In a well-functioning rating scale, each response option is the most likely answer somewhere along the trait. Move the thresholds and watch for categories that are never chosen, or thresholds that come out of order.</p>
+  <div class="tool">
+    <div class="plot">
+      <svg id="rsm" viewBox="0 0 560 330" role="img" aria-label="Category probability curves for a rating scale item"></svg>
+      <div class="legend" id="rsmLegend"></div>
+    </div>
+    <div class="controls">
+      <div class="ctl">
+        <label for="rsmM">Number of categories</label>
+        <select id="rsmM"><option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option></select>
+      </div>
+      <div id="rsmTaus" class="controls" style="gap:10px"></div>
+      <div class="row">
+        <button type="button" class="btn" data-rsm="good">Well spaced</button>
+        <button type="button" class="btn" data-rsm="close">Too close</button>
+        <button type="button" class="btn" data-rsm="disordered">Disordered</button>
+      </div>
+      <div class="readout" aria-live="polite">
+        <span class="pill good" id="rsmVerdict">Categories work</span>
+        <div class="msgs" id="rsmMsgs"></div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>How it is computed.</b> Andrich rating scale model with item location δ = 0: <code>P(X = x | θ) ∝ exp Σ<sub>k=1..x</sub> (θ − δ − τ<sub>k</sub>)</code>. Adjacent curves cross at θ = δ + τ<sub>k</sub>. The spacing check follows Linacre's (2002) guideline that thresholds should advance by at least 1.4 logits for a 3-category scale (about 1.0 for 5 categories) and by less than 5 logits. These are guidelines for judging a scale, not strict tests.</div>
+</section>
+
+<!-- ============ 2. CAT ============ -->
+<section id="cat">
+  <div class="sec-head"><h2>Watch an adaptive test find your level</h2><span class="eyebrow">CAT · 2PL · EAP</span></div>
+  <p class="intro">A computerized adaptive test picks each next item to be as informative as possible at the current ability estimate. Set a true ability and run it, or answer the items yourself, and see how quickly the estimate settles.</p>
+  <div class="tool">
+    <div class="plot">
+      <svg id="catSvg" viewBox="0 0 560 330" role="img" aria-label="Ability estimate and standard error after each administered item"></svg>
+      <div class="legend"><span><i style="background:var(--accent)"></i>estimate θ̂ ± 1 SE</span><span><i style="background:var(--curve)"></i>true θ</span><span>● correct · ○ incorrect</span></div>
+    </div>
+    <div class="controls">
+      <div class="ctl">
+        <label for="catMode">Who answers?</label>
+        <select id="catMode"><option value="sim">Simulated test taker</option><option value="self">I will answer</option></select>
+      </div>
+      <div class="ctl" id="catTrueBox">
+        <label for="catTrue">True ability θ <output id="catTrueV">1.00</output></label>
+        <input type="range" id="catTrue" min="-3" max="3" step="0.1" value="1">
+      </div>
+      <div class="ctl">
+        <label for="catStop">Stop when SE is below</label>
+        <select id="catStop"><option value="0.5">0.50 (short screening)</option><option value="0.4">0.40</option><option value="0.3" selected>0.30 (high precision)</option></select>
+        <small>Or after 30 items, whichever comes first. Bank of 80 simulated items.</small>
+      </div>
+      <div class="row" id="catSimBtns">
+        <button type="button" class="btn primary" id="catRun">Run test</button>
+        <button type="button" class="btn" id="catStep">Next item</button>
+        <button type="button" class="btn" id="catReset">Reset</button>
+      </div>
+      <div class="answer" id="catSelf" hidden>
+        <span id="catAsk">Item 1: difficulty b = 0.00</span>
+        <button type="button" class="btn primary" id="catYes">Correct</button>
+        <button type="button" class="btn" id="catNo">Incorrect</button>
+        <button type="button" class="btn" id="catReset2">Reset</button>
+      </div>
+      <div class="readout" aria-live="polite">
+        <span class="pill neutral" id="catStatus">Ready</span>
+        <div><span>Items given</span><b id="catN">0</b></div>
+        <div><span>Ability estimate θ̂</span><b id="catEst">0.00</b></div>
+        <div><span>Standard error</span><b id="catSE">1.00</b></div>
+      </div>
+      <div class="items"><table><thead><tr><th>#</th><th>a</th><th>b</th><th>answer</th><th>θ̂</th></tr></thead><tbody id="catRows"></tbody></table></div>
+    </div>
+  </div>
+  <div class="note"><b>How it is computed.</b> Items follow the two-parameter logistic model <code>P = 1 / (1 + exp(−a(θ − b)))</code>; the bank has 80 items with a between 0.7 and 2.0 and b between −3 and +3. The next item is the unused one with the most Fisher information <code>a²·P·(1 − P)</code> at the current estimate. θ̂ is the expected a posteriori (EAP) estimate with a standard normal prior; the standard error is the posterior standard deviation. Real programs add exposure control and content balancing, which this demo leaves out.</div>
+</section>
+
+<!-- ============ 3. MANTEL-HAENSZEL ============ -->
+<section id="mh">
+  <div class="sec-head"><h2>Mantel–Haenszel DIF calculator</h2><span class="eyebrow">ETS A / B / C classification</span></div>
+  <p class="intro">Enter, for one item, how many people in each group answered correctly and incorrectly within each total-score group. The calculator returns the common odds ratio, the ETS delta (MH D-DIF), the chi-square test and the ETS category. The table opens with example numbers; replace them with your own.</p>
+  <div class="row" style="margin-bottom:10px">
+    <button type="button" class="btn" id="mhAdd">Add score group</button>
+    <button type="button" class="btn" id="mhExample">Load example</button>
+    <button type="button" class="btn" id="mhClear">Clear</button>
+    <span class="example" id="mhTag">Example data</span>
+  </div>
+  <div class="mhwrap">
+    <table class="mh">
+      <thead>
+        <tr><th rowspan="2">Score group</th><th colspan="2">Reference group</th><th colspan="2">Focal group</th><th rowspan="2"><span class="eyebrow" style="font-size:10.5px">remove</span></th></tr>
+        <tr><th>correct</th><th>incorrect</th><th>correct</th><th>incorrect</th></tr>
+      </thead>
+      <tbody id="mhBody"></tbody>
+    </table>
+  </div>
+  <div class="mhout">
+    <div class="readout" style="border-top:0;padding-top:0" aria-live="polite">
+      <span class="pill" id="mhClass">—</span>
+      <p id="mhSay" style="font-size:14.5px;margin-bottom:6px">—</p>
+      <div><span>Common odds ratio α<sub>MH</sub></span><b id="mhAlpha">—</b></div>
+      <div><span>MH D-DIF (Δ<sub>MH</sub>)</span><b id="mhD">—</b></div>
+      <div><span>SE of Δ<sub>MH</sub></span><b id="mhSE">—</b></div>
+      <div><span>MH χ² (continuity corrected)</span><b id="mhChi">—</b></div>
+      <div><span>p-value</span><b id="mhP">—</b></div>
+      <div><span>Score groups used</span><b id="mhK">—</b></div>
+    </div>
+    <div class="plot">
+      <svg id="mhSvg" viewBox="0 0 400 150" role="img" aria-label="MH D-DIF on the ETS delta scale with A, B and C zones"></svg>
+    </div>
+  </div>
+  <div class="note"><b>How it is computed.</b> For score group k with reference correct A, reference incorrect B, focal correct C, focal incorrect D and total N: <code>α<sub>MH</sub> = Σ(A·D/N) / Σ(B·C/N)</code> and <code>Δ<sub>MH</sub> = −2.35 · ln α<sub>MH</sub></code>. Negative Δ means the item favors the reference group. The SE uses the Robins–Breslow–Greenland variance of ln α<sub>MH</sub>. ETS categories: <b>A</b> if |Δ| &lt; 1 or χ² is not significant at .05; <b>C</b> if |Δ| ≥ 1.5 and |Δ| is significantly greater than 1 (one-sided .05); otherwise <b>B</b>. Score groups where either group is empty are skipped. References: Holland &amp; Thayer (1988); Zwick (2012).</div>
+</section>
+
+<!-- ============ 4. ALPHA VS OMEGA ============ -->
+<section id="omega">
+  <div class="sec-head"><h2>When does α underestimate reliability?</h2><span class="eyebrow">Cronbach · McDonald</span></div>
+  <p class="intro">Cronbach's α assumes every item measures the construct equally well. When factor loadings differ, α falls below ω, the reliability of a one-factor model. Change the loadings and compare.</p>
+  <div class="tool">
+    <div class="plot">
+      <svg id="omSvg" viewBox="0 0 560 300" role="img" aria-label="Factor loadings of six items"></svg>
+    </div>
+    <div class="controls">
+      <div class="big"><div><span>Cronbach's α</span><b id="omA">—</b></div><div><span>McDonald's ω</span><b id="omO">—</b></div></div>
+      <div class="loads" id="omLoads"></div>
+      <div class="row">
+        <button type="button" class="btn" data-om="equal">Equal loadings</button>
+        <button type="button" class="btn" data-om="mixed">Mixed loadings</button>
+        <button type="button" class="btn" data-om="weak">One weak item</button>
+      </div>
+      <div class="readout" aria-live="polite">
+        <span class="pill neutral nocase" id="omVerdict">—</span>
+        <p id="omSay" style="font-size:14px;color:var(--muted)">—</p>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>How it is computed.</b> Six standardized items load on one factor with loadings λ<sub>i</sub> and uncorrelated errors (error variance 1 − λ<sub>i</sub>²). Implied total variance <code>V = (Σλ)² + Σ(1 − λ²)</code>. <code>ω = (Σλ)² / V</code> (McDonald, 1999) and <code>α = k/(k − 1) · (1 − k / V)</code> from the implied correlation matrix. With equal loadings (tau-equivalence) α = ω; otherwise α &lt; ω.</div>
+</section>
+
+<footer><a href="/#contact">Need help applying these to your own study? →</a><span>© 2026 Gözde Sırgancı</span></footer>
+</div>
+
+<script>
+/* ---------- shared helpers ---------- */
+var NS='http://www.w3.org/2000/svg';
+function el(n,at,txt){var e=document.createElementNS(NS,n);for(var k in at)e.setAttribute(k,at[k]);if(txt!=null)e.textContent=txt;return e}
+function clear(s){while(s.firstChild)s.removeChild(s.firstChild)}
+function fmt(x,d){if(!isFinite(x))return '—';var s=x.toFixed(d==null?2:d);return s.replace('-','−')}
+function frame(svg,o){
+  // o: W,H,L,R,T,B,xmin,xmax,ymin,ymax,xticks,yticks,xlab,ylab,yfmt
+  var pw=o.W-o.L-o.R, ph=o.H-o.T-o.B;
+  var X=function(v){return o.L+(v-o.xmin)/(o.xmax-o.xmin)*pw}, Y=function(v){return o.T+(1-(v-o.ymin)/(o.ymax-o.ymin))*ph};
+  var g=el('g',{});
+  o.yticks.forEach(function(v){g.appendChild(el('line',{x1:o.L,x2:o.W-o.R,y1:Y(v),y2:Y(v),stroke:'var(--rule)','stroke-dasharray':v===o.ymin?'':'2 4'}));g.appendChild(el('text',{x:o.L-7,y:Y(v)+4,'text-anchor':'end'},o.yfmt?o.yfmt(v):fmt(v,0)))});
+  g.appendChild(el('line',{x1:o.L,x2:o.L,y1:o.T,y2:o.T+ph,stroke:'var(--rule)'}));
+  o.xticks.forEach(function(v){g.appendChild(el('text',{x:X(v),y:o.T+ph+17,'text-anchor':'middle'},o.xfmt?o.xfmt(v):fmt(v,0)))});
+  if(o.xlab)g.appendChild(el('text',{x:o.L+pw/2,y:o.H-6,'text-anchor':'middle'},o.xlab));
+  if(o.ylab)g.appendChild(el('text',{x:13,y:o.T+ph/2,'text-anchor':'middle',transform:'rotate(-90 13 '+(o.T+ph/2)+')'},o.ylab));
+  svg.appendChild(g);
+  return {X:X,Y:Y,pw:pw,ph:ph};
+}
+function path(pts){return pts.map(function(p,i){return(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1)}).join('')}
+var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- 1. Rating scale model ---------- */
+(function(){
+  var svg=document.getElementById('rsm'), mSel=document.getElementById('rsmM'), box=document.getElementById('rsmTaus');
+  var COLORS=['#1E6A82','#3F8F8B','#6E9B4F','#B9922A','#C2410C','#8E3B5C','#4B4E8C'];
+  var presets={
+    good:{3:[-1.5,1.5],4:[-2,0,2],5:[-2.1,-0.7,0.7,2.1],6:[-2.4,-1.2,0,1.2,2.4],7:[-2.7,-1.6,-0.5,0.5,1.6,2.7]},
+    close:{3:[-0.4,0.4],4:[-0.6,0,0.6],5:[-0.9,-0.3,0.3,0.9],6:[-1,-0.5,0,0.5,1],7:[-1.2,-0.7,-0.25,0.25,0.7,1.2]},
+    disordered:{3:[0.8,-0.8],4:[-1.6,0.9,-0.4],5:[-2,0.6,-0.6,2],6:[-2.2,-0.4,0.8,-0.2,2.3],7:[-2.6,-1.2,0.9,-0.4,1.4,2.7]}
+  };
+  var taus=presets.good[5].slice();
+  function buildSliders(){
+    clear(box);var m=+mSel.value;
+    for(var i=0;i<m-1;i++){
+      var d=document.createElement('div');d.className='ctl';
+      d.innerHTML='<label for="tau'+i+'">Threshold τ'+(i+1)+' <output id="tauV'+i+'"></output></label><input type="range" id="tau'+i+'" min="-4" max="4" step="0.1" value="'+taus[i]+'">';
+      box.appendChild(d);
+      (function(i){d.querySelector('input').addEventListener('input',function(e){taus[i]=+e.target.value;draw()})})(i);
+    }
+  }
+  function probs(th,t){ // t: thresholds
+    var m=t.length+1, num=[1], s=0;
+    for(var x=1;x<m;x++){s+=th-t[x-1];num.push(Math.exp(s))}
+    var tot=num.reduce(function(a,b){return a+b},0);
+    return num.map(function(v){return v/tot});
+  }
+  function draw(){
+    var m=+mSel.value, t=taus.slice(0,m-1);
+    clear(svg);
+    var f=frame(svg,{W:560,H:330,L:44,R:14,T:14,B:44,xmin:-5,xmax:5,ymin:0,ymax:1,xticks:[-4,-2,0,2,4],yticks:[0,.25,.5,.75,1],xlab:'θ (trait level, logits)',ylab:'probability',yfmt:function(v){return v===0?'0':v===1?'1.0':String(v).replace('0.','.')}});
+    var N=200, curves=[];for(var c=0;c<m;c++)curves.push([]);
+    var modal=new Array(m).fill(false);
+    for(var i=0;i<=N;i++){var th=-5+10*i/N,p=probs(th,t),best=0;
+      for(c=0;c<m;c++){curves[c].push([f.X(th),f.Y(p[c])]);if(p[c]>p[best])best=c}
+      modal[best]=true}
+    // fine check for modality between grid points
+    for(i=0;i<=4000;i++){var th2=-8+16*i/4000,p2=probs(th2,t),b2=0;for(c=1;c<m;c++)if(p2[c]>p2[b2])b2=c;modal[b2]=true}
+    t.forEach(function(v,k){if(v>-5&&v<5)svg.appendChild(el('line',{x1:f.X(v),x2:f.X(v),y1:14,y2:14+f.ph,stroke:'var(--muted)','stroke-dasharray':'2 3','stroke-width':.8,opacity:.6}))});
+    for(c=0;c<m;c++){svg.appendChild(el('path',{d:path(curves[c]),fill:'none',stroke:COLORS[c],'stroke-width':2.4}))}
+    // legend
+    var lg=document.getElementById('rsmLegend');lg.innerHTML='';
+    for(c=0;c<m;c++){var s=document.createElement('span');s.innerHTML='<i style="background:'+COLORS[c]+'"></i>category '+c;lg.appendChild(s)}
+    t.forEach(function(v,k){var o=document.getElementById('tauV'+k);if(o)o.textContent=fmt(v,1)});
+    // checks
+    var msgs=[],ordered=true,adv=[];
+    for(var k=1;k<t.length;k++){var a=t[k]-t[k-1];adv.push(a);if(a<=0)ordered=false}
+    var never=[];modal.forEach(function(v,c){if(!v)never.push(c)});
+    var minAdv=m===3?1.4:m===4?1.1:1.0;
+    if(!ordered)msgs.push(['w','Thresholds are disordered: a higher threshold sits below a lower one.']);
+    if(never.length)msgs.push(['w','Category '+never.join(', ')+(never.length>1?' are':' is')+' never the most likely response.']);
+    var close=adv.filter(function(a){return a>0&&a<minAdv}).length, wide=adv.filter(function(a){return a>5}).length;
+    if(close)msgs.push(['w',close+' threshold gap'+(close>1?'s are':' is')+' smaller than about '+minAdv.toFixed(1)+' logits; respondents may not tell those options apart.']);
+    if(wide)msgs.push(['w','A threshold gap is wider than 5 logits; the scale may need another category there.']);
+    if(adv.length)msgs.push(['','Threshold gaps: '+adv.map(function(a){return fmt(a,1)}).join(', ')+' logits.']);
+    var v=document.getElementById('rsmVerdict');
+    if(!ordered||never.length){v.textContent='Categories need attention';v.className='pill bad'}
+    else if(close||wide){v.textContent='Usable, check spacing';v.className='pill warn'}
+    else {v.textContent='Categories work';v.className='pill good'}
+    var mb=document.getElementById('rsmMsgs');mb.innerHTML='';
+    msgs.forEach(function(x){var p=document.createElement('p');if(x[0])p.className=x[0];p.textContent=x[1];mb.appendChild(p)});
+  }
+  mSel.addEventListener('change',function(){taus=presets.good[+mSel.value].slice();buildSliders();draw()});
+  document.querySelectorAll('[data-rsm]').forEach(function(b){b.addEventListener('click',function(){taus=presets[b.dataset.rsm][+mSel.value].slice();buildSliders();draw()})});
+  buildSliders();draw();
+})();
+
+/* ---------- 2. CAT simulator ---------- */
+(function(){
+  function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+  var r=rng(20261022), bank=[];
+  for(var i=0;i<80;i++)bank.push({a:+(0.7+1.3*r()).toFixed(2),b:+(-3+6*r()).toFixed(2)});
+  var GRID=[];for(var q=-4;q<=4.0001;q+=0.05)GRID.push(+q.toFixed(2));
+  var prior=GRID.map(function(t){return Math.exp(-t*t/2)});
+  function P(it,t){return 1/(1+Math.exp(-it.a*(t-it.b)))}
+  var st;
+  function reset(){st={post:prior.slice(),used:{},hist:[{n:0,est:0,se:1,u:null}],items:[],done:false,next:null};if(timer){clearInterval(timer);timer=null}pick();render()}
+  function eap(){var s=0,m=0;for(var i=0;i<GRID.length;i++){s+=st.post[i];m+=st.post[i]*GRID[i]}m/=s;var v=0;for(i=0;i<GRID.length;i++)v+=st.post[i]*(GRID[i]-m)*(GRID[i]-m);return{est:m,se:Math.sqrt(v/s)}}
+  function pick(){var cur=st.hist[st.hist.length-1].est,best=-1,bi=-1;
+    bank.forEach(function(it,i){if(st.used[i])return;var p=P(it,cur),inf=it.a*it.a*p*(1-p);if(inf>best){best=inf;bi=i}});
+    st.next=bi}
+  function answer(u){
+    if(st.done||st.next<0)return;var it=bank[st.next];st.used[st.next]=true;
+    for(var i=0;i<GRID.length;i++){var p=P(it,GRID[i]);st.post[i]*=u?p:(1-p)}
+    var mx=Math.max.apply(null,st.post);st.post=st.post.map(function(v){return v/mx});
+    var e=eap();st.hist.push({n:st.hist.length,est:e.est,se:e.se,u:u});st.items.push({a:it.a,b:it.b,u:u,est:e.est});
+    var stop=+document.getElementById('catStop').value;
+    if(e.se<=stop||st.items.length>=30)st.done=true;else pick();
+    render();
+  }
+  function simStep(){if(st.done)return;var th=+document.getElementById('catTrue').value;answer(Math.random()<P(bank[st.next],th)?1:0)}
+  var timer=null;
+  function run(){if(st.done)reset();if(reduce){while(!st.done)simStep();return}
+    if(timer)return;timer=setInterval(function(){simStep();if(st.done){clearInterval(timer);timer=null}},320)}
+  function render(){
+    var svg=document.getElementById('catSvg');clear(svg);
+    var mode=document.getElementById('catMode').value;
+    var f=frame(svg,{W:560,H:330,L:40,R:14,T:14,B:44,xmin:0,xmax:30,ymin:-4,ymax:4,xticks:[0,5,10,15,20,25,30],yticks:[-4,-2,0,2,4],xlab:'items administered',ylab:'θ',yfmt:function(v){return fmt(v,0)}});
+    var h=st.hist;
+    var up=h.map(function(p){return[f.X(p.n),f.Y(Math.min(4,p.est+p.se))]}),dn=h.map(function(p){return[f.X(p.n),f.Y(Math.max(-4,p.est-p.se))]}).reverse();
+    svg.appendChild(el('path',{d:path(up.concat(dn))+'Z',fill:'var(--fill)'}));
+    if(mode==='sim'){var th=+document.getElementById('catTrue').value;svg.appendChild(el('line',{x1:f.X(0),x2:f.X(30),y1:f.Y(th),y2:f.Y(th),stroke:'var(--curve)','stroke-width':1.6,'stroke-dasharray':'6 4'}))}
+    svg.appendChild(el('path',{d:path(h.map(function(p){return[f.X(p.n),f.Y(p.est)]})),fill:'none',stroke:'var(--accent)','stroke-width':2.2}));
+    h.forEach(function(p){if(p.u==null)return;svg.appendChild(el('circle',{cx:f.X(p.n),cy:f.Y(p.est),r:3.6,fill:p.u?'var(--accent)':'var(--surface)',stroke:'var(--accent)','stroke-width':1.6}))});
+    var last=h[h.length-1];
+    document.getElementById('catN').textContent=st.items.length;
+    document.getElementById('catEst').textContent=fmt(last.est);
+    document.getElementById('catSE').textContent=fmt(last.se);
+    var s=document.getElementById('catStatus');
+    if(st.done){s.textContent=last.se<=+document.getElementById('catStop').value?'Stopped: target precision reached':'Stopped: 30-item limit';s.className='pill good'}
+    else if(st.items.length){s.textContent='Testing…';s.className='pill warn'}else{s.textContent='Ready';s.className='pill neutral'}
+    var rows=document.getElementById('catRows');rows.innerHTML='';
+    st.items.forEach(function(it,i){var tr=document.createElement('tr');tr.innerHTML='<td>'+(i+1)+'</td><td>'+it.a.toFixed(2)+'</td><td>'+fmt(it.b)+'</td><td class="'+(it.u?'ok':'no')+'">'+(it.u?'correct':'incorrect')+'</td><td>'+fmt(it.est)+'</td>';rows.appendChild(tr)});
+    var box=rows.parentNode.parentNode;box.scrollTop=box.scrollHeight;
+    document.getElementById('catStep').disabled=st.done;
+    document.getElementById('catYes').disabled=st.done;document.getElementById('catNo').disabled=st.done;
+    document.getElementById('catAsk').textContent=st.done?'Test finished.':'Item '+(st.items.length+1)+': difficulty b = '+fmt(bank[st.next].b);
+  }
+  var trueI=document.getElementById('catTrue');
+  trueI.addEventListener('input',function(){document.getElementById('catTrueV').textContent=fmt(+trueI.value);reset()});
+  document.getElementById('catStop').addEventListener('change',reset);
+  document.getElementById('catMode').addEventListener('change',function(e){var self=e.target.value==='self';document.getElementById('catTrueBox').hidden=self;document.getElementById('catSimBtns').hidden=self;document.getElementById('catSelf').hidden=!self;reset()});
+  document.getElementById('catRun').addEventListener('click',run);
+  document.getElementById('catStep').addEventListener('click',function(){if(timer){clearInterval(timer);timer=null}simStep()});
+  document.getElementById('catReset').addEventListener('click',reset);
+  document.getElementById('catReset2').addEventListener('click',reset);
+  document.getElementById('catYes').addEventListener('click',function(){answer(1)});
+  document.getElementById('catNo').addEventListener('click',function(){answer(0)});
+  reset();
+  // show a finished example run at rest so the chart is not empty
+  var saved=Math.random;var rr=rng(7);Math.random=rr;while(!st.done)simStep();Math.random=saved;render();
+})();
+
+/* ---------- 3. Mantel-Haenszel ---------- */
+var MH=(function(){
+  function erfc(x){var z=Math.abs(x),t=1/(1+0.5*z),r=t*Math.exp(-z*z-1.26551223+t*(1.00002368+t*(0.37409196+t*(0.09678418+t*(-0.18628806+t*(0.27886807+t*(-1.13520398+t*(1.48851587+t*(-0.82215223+t*0.17087277)))))))));return x>=0?r:2-r}
+  function compute(rows){
+    var nA=0,EA=0,VA=0,R=0,S=0,PR=0,PSQR=0,QS=0,used=0;
+    rows.forEach(function(k){var A=k[0],B=k[1],C=k[2],D=k[3],nR=A+B,nF=C+D,N=nR+nF,m1=A+C,m0=B+D;
+      if(!(nR>0&&nF>0)||N<2)return;used++;
+      nA+=A;EA+=nR*m1/N;VA+=nR*nF*m1*m0/(N*N*(N-1));
+      var Rk=A*D/N,Sk=B*C/N,Pk=(A+D)/N,Qk=(B+C)/N;R+=Rk;S+=Sk;PR+=Pk*Rk;PSQR+=Pk*Sk+Qk*Rk;QS+=Qk*Sk});
+    if(!used||R<=0||S<=0)return{used:used,ok:false};
+    var alpha=R/S,lnA=Math.log(alpha),D=-2.35*lnA;
+    var varLn=PR/(2*R*R)+PSQR/(2*R*S)+QS/(2*S*S),seD=2.35*Math.sqrt(varLn);
+    var chi=VA>0?Math.pow(Math.max(0,Math.abs(nA-EA)-0.5),2)/VA:0, p=erfc(Math.sqrt(chi/2));
+    var z=(Math.abs(D)-1)/seD, sigOver1=z>1.6449;
+    var cls=(Math.abs(D)<1||p>=0.05)?'A':(Math.abs(D)>=1.5&&sigOver1)?'C':'B';
+    return{used:used,ok:true,alpha:alpha,D:D,seD:seD,chi:chi,p:p,cls:cls};
+  }
+  return{compute:compute};
+})();
+(function(){
+  var EX=[[20,60,10,50],[45,55,25,55],[80,40,45,40],[110,25,60,25],[90,10,50,10]];
+  var body=document.getElementById('mhBody'),tag=document.getElementById('mhTag'),isEx=true;
+  function row(v,i){var tr=document.createElement('tr');
+    tr.innerHTML='<td class="k">'+(i+1)+'</td>'+[0,1,2,3].map(function(j){return'<td><input type="number" min="0" step="1" inputmode="numeric" id="mh'+i+'_'+j+'" aria-label="score group '+(i+1)+' '+['reference correct','reference incorrect','focal correct','focal incorrect'][j]+'" value="'+(v?v[j]:'')+'"></td>'}).join('')+'<td><button type="button" class="x" aria-label="Remove score group '+(i+1)+'">×</button></td>';
+    tr.querySelector('.x').addEventListener('click',function(){var d=read();d.splice(i,1);fill(d);isEx=false;calc()});
+    tr.querySelectorAll('input').forEach(function(inp){inp.addEventListener('input',function(){isEx=false;calc()})});
+    return tr}
+  function fill(d){body.innerHTML='';d.forEach(function(v,i){body.appendChild(row(v,i))})}
+  function read(){var out=[];body.querySelectorAll('tr').forEach(function(tr){out.push([].map.call(tr.querySelectorAll('input'),function(x){var n=parseFloat(x.value);return isFinite(n)&&n>=0?n:0}))});return out}
+  function calc(){
+    tag.hidden=!isEx;
+    var r=MH.compute(read()),c=document.getElementById('mhClass'),say=document.getElementById('mhSay');
+    document.getElementById('mhK').textContent=r.used;
+    var ids=['mhAlpha','mhD','mhSE','mhChi','mhP'];
+    if(!r.ok){ids.forEach(function(i){document.getElementById(i).textContent='—'});c.textContent='—';c.className='pill';say.textContent='Enter counts for at least one score group with people from both groups and both answers.';drawScale(null);return}
+    document.getElementById('mhAlpha').textContent=fmt(r.alpha,3);
+    document.getElementById('mhD').textContent=fmt(r.D,2);
+    document.getElementById('mhSE').textContent=fmt(r.seD,2);
+    document.getElementById('mhChi').textContent=fmt(r.chi,2);
+    document.getElementById('mhP').textContent=r.p<0.001?'< .001':fmt(r.p,3).replace('0.','.');
+    c.textContent='ETS category '+r.cls;c.className='pill '+(r.cls==='A'?'good':r.cls==='B'?'warn':'bad');
+    var dir=r.D<0?'the reference group':'the focal group';
+    say.textContent=r.cls==='A'?'Negligible DIF: the item works about the same for both groups.':(r.cls==='B'?'Slight to moderate DIF favoring '+dir+'. Review the item content.':'Moderate to large DIF favoring '+dir+'. The item should be reviewed and may need revision or removal.');
+    drawScale(r);
+  }
+  function drawScale(r){
+    var svg=document.getElementById('mhSvg');clear(svg);
+    var L=20,Rr=380,X=function(v){return L+(Math.max(-3,Math.min(3,v))+3)/6*(Rr-L)};
+    var zones=[[-3,-1.5,'C','var(--fill2)'],[-1.5,-1,'B','rgba(168,106,0,.10)'],[-1,1,'A','rgba(47,125,79,.10)'],[1,1.5,'B','rgba(168,106,0,.10)'],[1.5,3,'C','var(--fill2)']];
+    zones.forEach(function(z){svg.appendChild(el('rect',{x:X(z[0]),y:40,width:X(z[1])-X(z[0]),height:46,fill:z[3]}));svg.appendChild(el('text',{x:(X(z[0])+X(z[1]))/2,y:56,'text-anchor':'middle',style:'font-size:13px'},z[2]))});
+    [-3,-2,-1.5,-1,0,1,1.5,2,3].forEach(function(v){svg.appendChild(el('line',{x1:X(v),x2:X(v),y1:86,y2:91,stroke:'var(--muted)'}));svg.appendChild(el('text',{x:X(v),y:104,'text-anchor':'middle',style:'font-size:10px'},fmt(v,v%1?1:0)))});
+    svg.appendChild(el('text',{x:L,y:128,style:'font-size:10.5px'},'← favors reference'));
+    svg.appendChild(el('text',{x:Rr,y:128,'text-anchor':'end',style:'font-size:10.5px'},'favors focal →'));
+    svg.appendChild(el('text',{x:200,y:24,'text-anchor':'middle',style:'font-size:11px'},'MH D-DIF (ETS delta) with ±1.96 SE'));
+    if(!r)return;
+    var lo=r.D-1.96*r.seD,hi=r.D+1.96*r.seD;
+    svg.appendChild(el('line',{x1:X(lo),x2:X(hi),y1:72,y2:72,stroke:'var(--ink)','stroke-width':2}));
+    svg.appendChild(el('circle',{cx:X(r.D),cy:72,r:6,fill:'var(--accent)',stroke:'var(--surface)','stroke-width':2}));
+  }
+  document.getElementById('mhAdd').addEventListener('click',function(){var d=read();d.push([0,0,0,0]);fill(d);isEx=false;calc()});
+  document.getElementById('mhExample').addEventListener('click',function(){fill(EX);isEx=true;calc()});
+  document.getElementById('mhClear').addEventListener('click',function(){fill([[0,0,0,0],[0,0,0,0],[0,0,0,0]]);isEx=false;calc()});
+  fill(EX);calc();
+})();
+
+/* ---------- 4. Alpha vs omega ---------- */
+(function(){
+  var P={equal:[.7,.7,.7,.7,.7,.7],mixed:[.9,.8,.65,.5,.35,.2],weak:[.8,.8,.8,.8,.8,.15]};
+  var L=P.mixed.slice(),box=document.getElementById('omLoads');
+  function build(){box.innerHTML='';L.forEach(function(v,i){
+    var lab=document.createElement('label');lab.setAttribute('for','om'+i);lab.textContent='Item '+(i+1);
+    var inp=document.createElement('input');inp.type='range';inp.id='om'+i;inp.min='0.05';inp.max='0.95';inp.step='0.01';inp.value=v;
+    var out=document.createElement('output');out.id='omv'+i;
+    inp.addEventListener('input',function(){L[i]=+inp.value;draw()});
+    box.appendChild(lab);box.appendChild(inp);box.appendChild(out)})}
+  function calc(l){var k=l.length,s=0,e=0;l.forEach(function(x){s+=x;e+=1-x*x});var V=s*s+e;return{omega:s*s/V,alpha:k/(k-1)*(1-k/V)}}
+  function draw(){
+    var r=calc(L);
+    document.getElementById('omA').textContent=fmt(r.alpha,3).replace('0.','.');
+    document.getElementById('omO').textContent=fmt(r.omega,3).replace('0.','.');
+    L.forEach(function(v,i){document.getElementById('omv'+i).textContent=v.toFixed(2).replace('0.','.')});
+    var gap=r.omega-r.alpha,v=document.getElementById('omVerdict'),say=document.getElementById('omSay');
+    if(gap<0.005){v.textContent='α ≈ ω';v.className='pill nocase good';say.textContent='Loadings are (nearly) equal, so α and ω agree.'}
+    else{v.textContent='α is '+gap.toFixed(3).replace('0.','.')+' lower';v.className='pill nocase '+(gap<0.02?'neutral':'warn');say.textContent='Unequal loadings make α a lower bound. Here it understates the reliability of the one-factor model by '+gap.toFixed(3).replace('0.','.')+'.'}
+    var svg=document.getElementById('omSvg');clear(svg);
+    var f=frame(svg,{W:560,H:300,L:56,R:16,T:16,B:40,xmin:0,xmax:1,ymin:0,ymax:6,xticks:[0,.2,.4,.6,.8,1],yticks:[],xlab:'standardized factor loading λ',xfmt:function(v){return v===0?'0':v===1?'1.0':String(v).replace('0.','.')}});
+    [.2,.4,.6,.8,1].forEach(function(x){svg.appendChild(el('line',{x1:f.X(x),x2:f.X(x),y1:16,y2:16+f.ph,stroke:'var(--rule)','stroke-dasharray':'2 4'}))});
+    var bh=f.ph/6;
+    L.forEach(function(x,i){var y=16+i*bh+bh*0.2;
+      svg.appendChild(el('rect',{x:f.X(0),y:y,width:f.X(x)-f.X(0),height:bh*0.6,rx:2,fill:'var(--accent)',opacity:.85}));
+      svg.appendChild(el('rect',{x:f.X(x),y:y,width:f.X(1)-f.X(x),height:bh*0.6,rx:2,fill:'var(--fill2)'}));
+      svg.appendChild(el('text',{x:50,y:y+bh*0.3+4,'text-anchor':'end'},'item '+(i+1)));
+      svg.appendChild(el('text',{x:f.X(x)+6,y:y+bh*0.3+4},x.toFixed(2).replace('0.','.')))});
+    var mean=L.reduce(function(a,b){return a+b},0)/L.length;
+    svg.appendChild(el('line',{x1:f.X(mean),x2:f.X(mean),y1:12,y2:16+f.ph,stroke:'var(--curve)','stroke-width':1.6,'stroke-dasharray':'5 4'}));
+    svg.appendChild(el('text',{x:f.X(mean)+4,y:12,style:'fill:var(--curve)'},'mean λ'));
+  }
+  document.querySelectorAll('[data-om]').forEach(function(b){b.addEventListener('click',function(){L=P[b.dataset.om].slice();build();draw()})});
+  build();draw();
+})();
+</script>
+</body>
+</html>
