@@ -172,7 +172,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
       </div>
     </div>
   </div>
-  <div class="note"><b>Nasıl hesaplanıyor?</b> Madde konumu δ = 0 olan Andrich (1978) derecelendirme ölçeği modeli: <code>P(X = x | θ) ∝ exp Σ<sub>k=1..x</sub> (θ − δ − τ<sub>k</sub>)</code>. Komşu eğriler θ = δ + τ<sub>k</sub> noktasında kesişir. Aralık kontrolü Linacre'ın (2002) ölçütlerine dayanır: eşikler 3 kategorili bir ölçekte en az 1.4 logit (5 kategoride yaklaşık 1.0 logit) artmalı ve artış 5 logitten küçük olmalıdır. Bunlar ölçeği değerlendirmek için yol gösterici ölçütlerdir, kesin testler değildir.</div>
+  <div class="note"><b>Nasıl hesaplanıyor?</b> Madde konumu δ = 0 olan Andrich (1978) derecelendirme ölçeği modeli: <code>P(X = x | θ) ∝ exp Σ<sub>k=1..x</sub> (θ − δ − τ<sub>k</sub>)</code>. Komşu eğriler θ = δ + τ<sub>k</sub> noktasında kesişir. Aralık kontrolü Linacre'ın (2002) ölçütlerine dayanır: eşikler en az 1.4 logit artmalıdır; bu alt sınır kategori sayısı arttıkça azalır (m eşik için ardışık ln(x / (m + 1 − x)) değerleri arasındaki fark; örneğin 5 kategoride yaklaşık 0.8–1.0 logit). Artış 5 logitten de küçük olmalıdır. Bunlar ölçeği değerlendirmek için yol gösterici ölçütlerdir, kesin testler değildir.</div>
 </section>
 
 <!-- ============ 2. CAT ============ -->
@@ -360,11 +360,12 @@ var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce
     var msgs=[],ordered=true,adv=[];
     for(var k=1;k<t.length;k++){var a=t[k]-t[k-1];adv.push(a);if(a<=0)ordered=false}
     var never=[];modal.forEach(function(v,c){if(!v)never.push(c)});
-    var minAdv=m===3?1.4:m===4?1.1:1.0;
+    var T=m-1,req=[];for(var x=1;x<T;x++)req.push(Math.log((x+1)/(T-x))-Math.log(x/(T+1-x))); // Linacre (2002) minimum advances
+    var minAdv=req.length?Math.min.apply(null,req):1.4;
     if(!ordered)msgs.push(['w','Eşikler sıralı değil: daha yüksek olması gereken bir eşik, bir öncekinin altında kalıyor.']);
     if(never.length)msgs.push(['w','Kategori '+never.join(', ')+' hiçbir θ düzeyinde en olası yanıt olmuyor.']);
-    var close=adv.filter(function(a){return a>0&&a<minAdv}).length, wide=adv.filter(function(a){return a>5}).length;
-    if(close)msgs.push(['w',close+' eşik aralığı yaklaşık '+minAdv.toFixed(1)+' logitten küçük; katılımcılar bu seçenekleri birbirinden ayırt edemeyebilir.']);
+    var close=adv.filter(function(a,k){return a>0&&a<req[k]-1e-9}).length, wide=adv.filter(function(a){return a>5}).length;
+    if(close)msgs.push(['w',close+' eşik aralığı yaklaşık Linacre\'ın önerdiği en küçük artıştan (bu kategori sayısı için yaklaşık '+minAdv.toFixed(1)+' logit) küçük; katılımcılar bu seçenekleri birbirinden ayırt edemeyebilir.']);
     if(wide)msgs.push(['w','Bir eşik aralığı 5 logitten geniş; ölçeğin o bölgede ek bir kategoriye ihtiyacı olabilir.']);
     if(adv.length)msgs.push(['','Eşik aralıkları: '+adv.map(function(a){return fmt(a,1)}).join(', ')+' logit.']);
     var v=document.getElementById('rsmVerdict');

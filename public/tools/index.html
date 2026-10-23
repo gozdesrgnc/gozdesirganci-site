@@ -171,7 +171,7 @@ footer{padding-block:28px 40px;font-size:13px;color:var(--muted);display:flex;ju
       </div>
     </div>
   </div>
-  <div class="note"><b>How it is computed.</b> Andrich (1978) rating scale model with item location δ = 0: <code>P(X = x | θ) ∝ exp Σ<sub>k=1..x</sub> (θ − δ − τ<sub>k</sub>)</code>. Adjacent curves cross at θ = δ + τ<sub>k</sub>. The spacing check follows Linacre's (2002) guideline that thresholds should advance by at least 1.4 logits for a 3-category scale (about 1.0 for 5 categories) and by less than 5 logits. These are guidelines for judging a scale, not strict tests.</div>
+  <div class="note"><b>How it is computed.</b> Andrich (1978) rating scale model with item location δ = 0: <code>P(X = x | θ) ∝ exp Σ<sub>k=1..x</sub> (θ − δ − τ<sub>k</sub>)</code>. Adjacent curves cross at θ = δ + τ<sub>k</sub>. The spacing check follows Linacre's (2002) guideline that thresholds should advance by at least 1.4 logits, a minimum that shrinks as categories are added (for m thresholds, the gaps between successive values of ln(x / (m + 1 − x)); about 0.8–1.0 logits for 5 categories), and by less than 5 logits. These are guidelines for judging a scale, not strict tests.</div>
 </section>
 
 <!-- ============ 2. CAT ============ -->
@@ -359,11 +359,12 @@ var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce
     var msgs=[],ordered=true,adv=[];
     for(var k=1;k<t.length;k++){var a=t[k]-t[k-1];adv.push(a);if(a<=0)ordered=false}
     var never=[];modal.forEach(function(v,c){if(!v)never.push(c)});
-    var minAdv=m===3?1.4:m===4?1.1:1.0;
+    var T=m-1,req=[];for(var x=1;x<T;x++)req.push(Math.log((x+1)/(T-x))-Math.log(x/(T+1-x))); // Linacre (2002) minimum advances
+    var minAdv=req.length?Math.min.apply(null,req):1.4;
     if(!ordered)msgs.push(['w','Thresholds are disordered: a higher threshold sits below a lower one.']);
     if(never.length)msgs.push(['w','Category '+never.join(', ')+(never.length>1?' are':' is')+' never the most likely response.']);
-    var close=adv.filter(function(a){return a>0&&a<minAdv}).length, wide=adv.filter(function(a){return a>5}).length;
-    if(close)msgs.push(['w',close+' threshold gap'+(close>1?'s are':' is')+' smaller than about '+minAdv.toFixed(1)+' logits; respondents may not tell those options apart.']);
+    var close=adv.filter(function(a,k){return a>0&&a<req[k]-1e-9}).length, wide=adv.filter(function(a){return a>5}).length;
+    if(close)msgs.push(['w',close+' threshold gap'+(close>1?'s are':' is')+' smaller than Linacre\'s minimum for this number of categories (about '+minAdv.toFixed(1)+' logits); respondents may not tell those options apart.']);
     if(wide)msgs.push(['w','A threshold gap is wider than 5 logits; the scale may need another category there.']);
     if(adv.length)msgs.push(['','Threshold gaps: '+adv.map(function(a){return fmt(a,1)}).join(', ')+' logits.']);
     var v=document.getElementById('rsmVerdict');
